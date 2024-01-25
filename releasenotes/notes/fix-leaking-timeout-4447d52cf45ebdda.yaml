@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    When the ``max_seconds`` argument to the :func:`~qiskit_addon_obp.backpropagate` method
+    is used, but the timeout is not reached during the actual OBP execution, the
+    signal will now be reset properly, thereby avoiding cancellations at a
+    (seemingly) random later point in time (of course, it is not random but
+    actually after the specified amount of time has passed, but the rest of the
+    code being executed after OBP could be doing anything at this point).

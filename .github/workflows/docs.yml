@@ -1,0 +1,77 @@
+name: Sphinx
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+*"
+    branches:
+      - main
+      - 'stable/**'
+  pull_request:
+    branches:
+      - main
+      - 'stable/**'
+
+jobs:
+  build:
+    name: build docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+      - name: Tell reno to name the upcoming release after the branch we are on
+        shell: bash
+        run: |
+          sed -i.bak -e '/unreleased_version_title:*/d' releasenotes/config.yaml
+          echo unreleased_version_title: \"Upcoming release \(\`\`${GITHUB_REF_NAME}\`\`\)\" >> releasenotes/config.yaml
+      - name: Build docs
+        shell: bash
+        run: |
+          tox -edocs
+      - name: Upload docs artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/_build/html
+
+      # Provide a nicely named artifact that extracts into an
+      # identically named subdirectory.
+      - name: Prepare nice docs artifact for humans
+        if: always()
+        shell: bash
+        run: |
+          mkdir artifact
+          cp -a docs/_build/html artifact/qiskit-addon-obp-htmldocs
+      - name: Upload nice docs artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qiskit-addon-obp-htmldocs
+          path: ./artifact
+
+  deploy:
+    name: deploy docs
+    if: ${{ github.ref == 'refs/heads/stable/0.1' }}
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

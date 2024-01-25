@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    The computation of the :meth:`~qiskit_addon_obp.utils.metadata.OBPMetadata.accumulated_error` and
+    :meth:`~qiskit_addon_obp.utils.metadata.OBPMetadata.left_over_error_budget` were fixed to respect the
+    `Minkowski inequality <https://en.wikipedia.org/wiki/Minkowski_inequality>`_.
+    This is necessary, because a general Lp-norm (other than ``p=2``) does not
+    satisfy the `parallelogram law <https://en.wikipedia.org/wiki/Parallelogram_law>`_
+    which resulted in a non-rigorous upper bound of the actual accumulated errors
+    (and left-over error budgets by extension).

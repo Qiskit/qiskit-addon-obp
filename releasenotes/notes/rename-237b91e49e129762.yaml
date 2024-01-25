@@ -1,0 +1,16 @@
+upgrade:
+  - |
+    The project's root Python namespace has been changed from ``obp`` to
+    ``qiskit_addon_obp``. All package imports must be updated.
+
+    For example:
+
+    .. code-block:: python
+
+        from obp import backpropagate
+
+    should be changed to:
+
+    .. code-block:: python
+
+        from qiskit_addon_obp import backpropagate

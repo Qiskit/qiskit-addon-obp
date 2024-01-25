@@ -1,0 +1,28 @@
+---
+upgrade:
+  - |
+    The ``max_slices`` kwarg has been removed from :func:`~qiskit_addon_obp.backpropagate`. Users should now
+    only pass in slices which they intend to back-propagate. If a user wants to attempt to only
+    back-propagate the last ``20`` slices of an ``N``-slice circuit, they would simply pass in
+    the last ``20`` slices to :func:`~qiskit_addon_obp.backpropagate` and, recombine any slices remaining after
+    back-propagation with the original ``N-20`` slices.
+
+    For example
+
+    .. code-block:: python
+
+        from qiskit_addon_obp import backpropagate
+        from qiskit_addon_obp.utils.truncating import setup_budget
+        from qiskit_addon_utils.slicing import combine_slices
+
+        num_slices = 20
+        truncation_error_budget = setup_budget(max_error_total=0.02, num_slices=num_slices, p_norm=1)
+        bp_obs, remaining_slices, metadata = backpropagate(
+             obs, slices[-num_slices:], truncation_error_budget=truncation_error_budget
+        )
+        reduced_circuit = combine_slices(slices[:-num_slices] + remaining_slices)
+
+  - |
+    The ``max_slices`` kwarg in :func:`~qiskit_addon_obp.utils.truncating.setup_budget` has been renamed to ``num_slices``.
+  - |
+    The ``max_slices`` attribute in :class:`~qiskit_addon_obp.utils.metadata.OBPMetadata` has been renamed to ``num_slices``.

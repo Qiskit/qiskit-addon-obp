@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds the ``max_seconds`` keyword-argument to the :func:`~qiskit_addon_obp.backpropagate`
+    function, allowing the end-user to specify a maximum wall clock time for the
+    algorithm. This can (for example) be useful for exploring different
+    truncation error budget strategies while limiting the CPU time.
