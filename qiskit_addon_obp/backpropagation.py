@@ -128,7 +128,11 @@ def backpropagate(
 
     if max_seconds is not None:
         if sys.platform == "win32":
-            raise RuntimeError("The `max_seconds` argument is not available on Windows.")
+            # NOTE: we do cover the line below in our test suite, but our coverage summary only
+            # gathers data from UNIX runners.
+            raise RuntimeError(  # pragma: no cover
+                "The `max_seconds` argument is not available on Windows."
+            )
 
         def handle_timeout(signum, frame):
             raise TimeoutException()
