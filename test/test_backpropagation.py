@@ -12,6 +12,7 @@
 
 """Tests for operator backpropagation utility functions."""
 
+import sys
 import time
 import unittest
 from math import e
@@ -875,17 +876,21 @@ class TestBackpropagation(unittest.TestCase):
                 backpropagate(obs, slices, operator_budget=op_budget)
 
     def test_backpropagate_timeout(self):
+        qc = QuantumCircuit(2)
+        qc.rx(0.1, 0)
+        qc.ry(0.1, 0)
+        qc.rz(0.1, 0)
+        qc.cx(0, 1)
+        slices = slice_by_depth(qc, 1)
+        obs = SparsePauliOp("IX")
+
+        on_win = sys.platform == "win32"
         with self.subTest("Actual timeout"):
-            qc = QuantumCircuit(2)
-            qc.rx(0.1, 0)
-            qc.ry(0.1, 0)
-            qc.rz(0.1, 0)
-            qc.cx(0, 1)
-            slices = slice_by_depth(qc, 1)
-            slices = 100_000 * slices
-            obs = SparsePauliOp("IX")
+            if on_win:
+                pytest.skip("Does not run on Windows")
+            many_slices = 100_000 * slices
             t1 = time.time()
-            _, new_qc, _ = backpropagate(obs, slices, max_seconds=1)
+            _, new_qc, _ = backpropagate(obs, many_slices, max_seconds=1)
             t2 = time.time()
 
             with self.subTest("Time should be less than 2 seconds"):
@@ -895,13 +900,8 @@ class TestBackpropagation(unittest.TestCase):
                 assert len(new_qc) > 0
 
         with self.subTest("Reset timeout"):
-            qc = QuantumCircuit(2)
-            qc.rx(0.1, 0)
-            qc.ry(0.1, 0)
-            qc.rz(0.1, 0)
-            qc.cx(0, 1)
-            slices = slice_by_depth(qc, 1)
-            obs = SparsePauliOp("IX")
+            if on_win:
+                pytest.skip("Does not run on Windows")
             t1 = time.time()
             _, new_qc, _ = backpropagate(obs, slices, max_seconds=1)
             t2 = time.time()
@@ -910,3 +910,9 @@ class TestBackpropagation(unittest.TestCase):
                 assert len(new_qc) == 0
 
             sleep(1)
+
+        with self.subTest("Handle windows"):
+            if not on_win:
+                pytest.skip("Only on Windows")
+            with self.assertRaises(RuntimeError):
+                _, _, _ = backpropagate(obs, slices, max_seconds=1)

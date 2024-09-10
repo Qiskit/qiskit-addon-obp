@@ -17,6 +17,7 @@ from __future__ import annotations
 import copy
 import logging
 import signal
+import sys
 from collections.abc import Sequence
 
 from qiskit import QuantumCircuit
@@ -68,6 +69,9 @@ def backpropagate(
     the ``truncation_error_budget`` argument. Refer to the
     :func:`~qiskit_addon_obp.utils.truncating.setup_budget` documentation for more details.
 
+    .. warning::
+       The ``max_seconds`` argument is not available on Windows!
+
     Args:
         observables: The observable(s) onto which the circuit is backpropagated.
         slices: A sequence of ``QuantumCircuit`` objects representing a single circuit which
@@ -92,6 +96,7 @@ def backpropagate(
         - A metadata container.
 
     Raises:
+        RuntimeError: If the ``max_seconds`` argument is attempted to be used on Windows.
         ValueError: All observables and slices must act on equivalent numbers of qubits.
         ValueError: An input observable is larger than the constraints specified by ``operator_budget``.
         ValueError: ``operator_budget.max_paulis`` or ``operator_budget.max_qwc_groups`` is less than 1.
@@ -122,6 +127,8 @@ def backpropagate(
     )
 
     if max_seconds is not None:
+        if sys.platform == "win32":
+            raise RuntimeError("The `max_seconds` argument is not available on Windows.")
 
         def handle_timeout(signum, frame):
             raise TimeoutException()

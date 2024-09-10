@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import sys
 import tempfile
 import unittest
 
@@ -170,7 +171,7 @@ class TestOBPMetadata(unittest.TestCase):
         self.assertEqual(metadata, self.expected)
 
     def test_to_json(self):
-        with tempfile.NamedTemporaryFile() as file:
+        with tempfile.NamedTemporaryFile(delete=sys.platform != "win32") as file:
             self.expected.to_json(file.name, indent=2)
 
             with (
