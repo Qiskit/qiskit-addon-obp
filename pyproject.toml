@@ -159,7 +159,7 @@ max-args = 6
 
 [tool.ruff.lint.flake8-copyright]
 notice-rgx = """
-# This code is part of a Qiskit project.
+# This code is a Qiskit project.
 #
 # \\(C\\) Copyright IBM 2024\\.
 #
