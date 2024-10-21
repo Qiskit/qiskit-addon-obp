@@ -36,7 +36,7 @@ from matplotlib.axes import Axes
 from .metadata import OBPMetadata
 
 
-def plot_accumulated_error(metadata: OBPMetadata, axes: Axes, show_legend: bool = True) -> None:
+def plot_accumulated_error(metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True) -> None:
     """Plot the accumulated error.
 
     This method populates the provided figure axes with a line-plot of the
@@ -98,7 +98,7 @@ def plot_accumulated_error(metadata: OBPMetadata, axes: Axes, show_legend: bool 
 
 
 def plot_left_over_error_budget(
-    metadata: OBPMetadata, axes: Axes, show_legend: bool = True
+    metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True
 ) -> None:
     """Plot the left-over error budget.
 
@@ -146,7 +146,7 @@ def plot_left_over_error_budget(
     _set_legend(axes, show_legend)
 
 
-def plot_slice_errors(metadata: OBPMetadata, axes: Axes, show_legend: bool = True) -> None:
+def plot_slice_errors(metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True) -> None:
     """Plot the slice errors.
 
     This method populates the provided figure axes with a bar-plot of the truncation error incurred
@@ -201,7 +201,7 @@ def plot_slice_errors(metadata: OBPMetadata, axes: Axes, show_legend: bool = Tru
     _set_legend(axes, show_legend)
 
 
-def plot_num_paulis(metadata: OBPMetadata, axes: Axes, show_legend: bool = True) -> None:
+def plot_num_paulis(metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True) -> None:
     """Plot the number of Pauli terms.
 
     This method populates the provided figure axes with a line-plot of the number of Pauli terms at
@@ -248,7 +248,9 @@ def plot_num_paulis(metadata: OBPMetadata, axes: Axes, show_legend: bool = True)
     _set_legend(axes, show_legend)
 
 
-def plot_num_truncated_paulis(metadata: OBPMetadata, axes: Axes, show_legend: bool = True) -> None:
+def plot_num_truncated_paulis(
+    metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True
+) -> None:
     """Plot the number of truncated Pauli terms.
 
     This method populates the provided figure axes with a bar-plot of the number of the truncated
@@ -302,7 +304,7 @@ def plot_num_truncated_paulis(metadata: OBPMetadata, axes: Axes, show_legend: bo
     _set_legend(axes, show_legend)
 
 
-def plot_sum_paulis(metadata: OBPMetadata, axes: Axes, show_legend: bool = True) -> None:
+def plot_sum_paulis(metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True) -> None:
     """Plot the total number of all Pauli terms.
 
     This method populates the provided figure axes with a line-plot of the total number of all Pauli
@@ -358,7 +360,7 @@ def plot_sum_paulis(metadata: OBPMetadata, axes: Axes, show_legend: bool = True)
     _set_legend(axes, show_legend)
 
 
-def plot_num_qwc_groups(metadata: OBPMetadata, axes: Axes, show_legend: bool = True) -> None:
+def plot_num_qwc_groups(metadata: OBPMetadata, axes: Axes, *, show_legend: bool = True) -> None:
     """Plot the number of qubit-wise commuting Pauli groups.
 
     This method populates the provided figure axes with a line-plot of the number of qubit-wise
