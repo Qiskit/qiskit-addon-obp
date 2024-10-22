@@ -11,17 +11,17 @@
 # that they have been altered from the originals.
 
 """
+=====================================================================
+Pauli operator simplfication (:mod:`qiskit_addon_obp.utils.simplify`)
+=====================================================================
+
 Functions for simplifying Pauli operators.
 
 .. currentmodule:: qiskit_addon_obp.utils.simplify
 
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   OperatorBudget
-   SimplifyMetadata
-   simplify
+.. autoclass:: OperatorBudget
+.. autoclass:: SimplifyMetadata
+.. autofunction:: simplify
 """
 
 from __future__ import annotations

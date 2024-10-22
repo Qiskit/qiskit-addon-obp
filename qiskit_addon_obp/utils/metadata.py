@@ -11,6 +11,10 @@
 # that they have been altered from the originals.
 
 """
+===========================================================
+Metadata utilities (:mod:`qiskit_addon_obp.utils.metadata`)
+===========================================================
+
 Container classes for holding backpropagation metadata.
 
 .. currentmodule:: qiskit_addon_obp.utils.metadata

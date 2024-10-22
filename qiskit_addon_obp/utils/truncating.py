@@ -11,17 +11,17 @@
 # that they have been altered from the originals.
 
 """
+===============================================================
+Truncation utilities (:mod:`qiskit_addon_obp.utils.truncating`)
+===============================================================
+
 Functions for truncating Pauli operators within given error budgets.
 
 .. currentmodule:: qiskit_addon_obp.utils.truncating
 
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   TruncationErrorBudget
-   setup_budget
-   truncate_binary_search
+.. autoclass: TruncationErrorBudget
+.. autofunction:: setup_budget
+.. autofunction:: truncate_binary_search
 """
 
 from __future__ import annotations

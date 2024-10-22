@@ -10,23 +10,16 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Main operator backpropagation functionality.
+"""
+==================================================
+Operator backpropagation (:mod:`qiskit_addon_obp`)
+==================================================
+
+Main operator backpropagation functionality.
 
 .. currentmodule:: qiskit_addon_obp
 
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   backpropagate
-
-Submodules
-==========
-
-.. autosummary::
-   :toctree:
-
-   utils
+.. autofunction:: backpropagate
 """
 
 from .backpropagation import backpropagate
