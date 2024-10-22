@@ -11,17 +11,17 @@
 # that they have been altered from the originals.
 
 """
+=============================================================
+Operator utilities (:mod:`qiskit_addon_obp.utils.operations`)
+=============================================================
+
 Utility functions for operator backpropagation.
 
 .. currentmodule:: qiskit_addon_obp.utils.operations
 
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   apply_op_to
-   to_global_op
-   reduce_op
+.. autofunction:: apply_op_to
+.. autofunction:: to_global_op
+.. autofunction:: reduce_op
 """
 
 from __future__ import annotations
