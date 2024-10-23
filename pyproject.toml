@@ -137,6 +137,7 @@ select = [
     "I",   # isort
     "E",   # pycodestyle
     "W",   # pycodestyle
+    "D",   # pydocstyle
     "F",   # pyflakes
     "RUF", # ruff
     "UP",  # pyupgrade
@@ -152,8 +153,12 @@ ignore = [
 max-args = 6
 
 [tool.ruff.lint.extend-per-file-ignores]
+"test/**.py" = [
+    "D",  # pydocstyle
+]
 "docs/**/*" = [
     "E402", # module level import not at top of file
+    "D",  # pydocstyle
 ]
 
 [tool.ruff.lint.flake8-copyright]
