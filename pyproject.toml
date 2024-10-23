@@ -154,11 +154,13 @@ max-args = 6
 
 [tool.ruff.lint.extend-per-file-ignores]
 "test/**.py" = [
-    "D",  # pydocstyle
+    "D",    # pydocstyle
 ]
 "docs/**/*" = [
     "E402", # module level import not at top of file
-    "D",  # pydocstyle
+]
+"docs/conf.py" = [
+    "D",    # pydocstyle
 ]
 
 [tool.ruff.lint.flake8-copyright]
