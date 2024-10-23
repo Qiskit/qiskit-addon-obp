@@ -59,7 +59,6 @@ style = [
 ]
 lint = [
     "qiskit-addon-obp[style]",
-    "pydocstyle==6.3.0",
     "mypy==1.11.2",
     "pylint==3.3.1",
     "reno>=4.1",
