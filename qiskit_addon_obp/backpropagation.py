@@ -52,8 +52,7 @@ def backpropagate(
     operator_budget: OperatorBudget | None = None,
     max_seconds: int | None = None,
 ) -> tuple[list[SparsePauliOp], Sequence[QuantumCircuit], OBPMetadata]:
-    """
-    Backpropagate slices of quantum circuit operations onto the provided observables.
+    """Backpropagate slices of quantum circuit operations onto the provided observables.
 
     This function takes a (list of) observable(s) and backpropagates the provided quantum circuit
     slices **in reverse order** onto the observable(s) until one of the stopping criteria is reached.
@@ -100,6 +99,7 @@ def backpropagate(
         ValueError: All observables and slices must act on equivalent numbers of qubits.
         ValueError: An input observable is larger than the constraints specified by ``operator_budget``.
         ValueError: ``operator_budget.max_paulis`` or ``operator_budget.max_qwc_groups`` is less than 1.
+
     """
     operator_budget = operator_budget or OperatorBudget()
     truncation_error_budget = truncation_error_budget or TruncationErrorBudget()

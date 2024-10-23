@@ -10,8 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-Various visualization utilities.
+"""Various visualization utilities.
 
 .. currentmodule:: qiskit_addon_obp.utils.visualization
 
@@ -72,6 +71,7 @@ def plot_accumulated_error(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     if not np.isinf(metadata.truncation_error_budget.max_error_total):
         axes.axhline(
@@ -127,6 +127,7 @@ def plot_left_over_error_budget(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     for obs_idx in range(len(metadata.backpropagation_history[0].slice_errors)):
         axes.plot(
@@ -176,6 +177,7 @@ def plot_slice_errors(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     num_observables = len(metadata.backpropagation_history[0].slice_errors)
     width = 0.8 / num_observables
@@ -229,6 +231,7 @@ def plot_num_paulis(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     for obs_idx in range(len(metadata.backpropagation_history[0].slice_errors)):
         axes.plot(
@@ -275,6 +278,7 @@ def plot_num_truncated_paulis(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     num_observables = len(metadata.backpropagation_history[0].slice_errors)
     width = 0.8 / num_observables
@@ -329,6 +333,7 @@ def plot_sum_paulis(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     if metadata.operator_budget.max_paulis is not None:
         axes.axhline(
@@ -380,6 +385,7 @@ def plot_num_qwc_groups(metadata: OBPMetadata, axes: Axes) -> None:
     Args:
         metadata: the metadata to be visualized.
         axes: the matplotlib axes in which to plot.
+
     """
     if metadata.operator_budget.max_qwc_groups is not None:
         axes.axhline(

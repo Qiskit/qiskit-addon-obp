@@ -597,7 +597,6 @@ class TestBackpropagation(unittest.TestCase):
 
     def test_backpropagate_multi(self):
         """Tests back-propagation into multiple observables."""
-
         with self.subTest("Single slice"):
             theta = np.pi / 6
             qc_mat = np.array(
