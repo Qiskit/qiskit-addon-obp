@@ -171,6 +171,9 @@ notice-rgx = """
 # that they have been altered from the originals\\.
 """
 
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 [tool.typos.default.extend-words]
 IY = "IY"
 aer = "aer"
