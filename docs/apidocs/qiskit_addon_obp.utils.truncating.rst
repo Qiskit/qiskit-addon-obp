@@ -9,6 +9,6 @@ Truncation utilities (:mod:`qiskit_addon_obp.utils.truncating`)
 
 .. currentmodule:: qiskit_addon_obp.utils.truncating
 
-.. autoclass: TruncationErrorBudget
+.. autoclass:: TruncationErrorBudget
 .. autofunction:: setup_budget
 .. autofunction:: truncate_binary_search
