@@ -1,6 +1,6 @@
-﻿===========================================================
-Visualization (:mod:`qiskit_addon_obp.utils.visualization`)
-===========================================================
+﻿=====================================================================
+Visualization utilities (:mod:`qiskit_addon_obp.utils.visualization`)
+=====================================================================
 
 .. automodule:: qiskit_addon_obp.utils.visualization
    :no-members:
