@@ -146,6 +146,9 @@ select = [
 ]
 ignore = [
     "E501", # line too long
+    "D205", # 1 blank line between summary and description
+    "D212", # multi-line docstring should start at first line
+    "D415", # first line should end with a period
 ]
 
 [tool.ruff.lint.pylint]
