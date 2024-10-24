@@ -10,19 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-===============================================================
-Truncation utilities (:mod:`qiskit_addon_obp.utils.truncating`)
-===============================================================
-
-Functions for truncating Pauli operators within given error budgets.
-
-.. currentmodule:: qiskit_addon_obp.utils.truncating
-
-.. autoclass: TruncationErrorBudget
-.. autofunction:: setup_budget
-.. autofunction:: truncate_binary_search
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Functions for truncating Pauli operators within given error budgets."""
 
 from __future__ import annotations
 

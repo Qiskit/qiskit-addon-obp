@@ -10,19 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-=====================================================================
-Pauli operator simplfication (:mod:`qiskit_addon_obp.utils.simplify`)
-=====================================================================
-
-Functions for simplifying Pauli operators.
-
-.. currentmodule:: qiskit_addon_obp.utils.simplify
-
-.. autoclass:: OperatorBudget
-.. autoclass:: SimplifyMetadata
-.. autofunction:: simplify
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Functions for simplifying Pauli operators."""
 
 from __future__ import annotations
 

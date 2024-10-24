@@ -10,19 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-=============================================================
-Operator utilities (:mod:`qiskit_addon_obp.utils.operations`)
-=============================================================
-
-Utility functions for operator backpropagation.
-
-.. currentmodule:: qiskit_addon_obp.utils.operations
-
-.. autofunction:: apply_op_to
-.. autofunction:: to_global_op
-.. autofunction:: reduce_op
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Utility functions for operator backpropagation."""
 
 from __future__ import annotations
 

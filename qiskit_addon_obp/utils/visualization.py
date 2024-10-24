@@ -10,23 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-===========================================================
-Visualization (:mod:`qiskit_addon_obp.utils.visualization`)
-===========================================================
-
-Various visualization utilities.
-
-.. currentmodule:: qiskit_addon_obp.utils.visualization
-
-.. autofunction:: plot_accumulated_error
-.. autofunction:: plot_left_over_error_budget
-.. autofunction:: plot_slice_errors
-.. autofunction:: plot_num_paulis
-.. autofunction:: plot_num_truncated_paulis
-.. autofunction:: plot_sum_paulis
-.. autofunction:: plot_num_qwc_groups
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Various visualization utilities."""
 
 from __future__ import annotations
 
