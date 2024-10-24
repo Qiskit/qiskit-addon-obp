@@ -10,24 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Main operator backpropagation functionality.
-
-.. currentmodule:: qiskit_addon_obp
-
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   backpropagate
-
-Submodules
-==========
-
-.. autosummary::
-   :toctree:
-
-   utils
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Main operator backpropagation functionality."""
 
 from .backpropagation import backpropagate
 

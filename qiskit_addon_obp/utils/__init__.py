@@ -10,16 +10,4 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Utility functionality for conducting operator backpropagation.
-
-.. currentmodule:: qiskit_addon_obp.utils
-
-.. autosummary::
-   :toctree:
-
-   metadata
-   operations
-   simplify
-   truncating
-   visualization
-"""
+"""Utility functionality for conducting operator backpropagation."""

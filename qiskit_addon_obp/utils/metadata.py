@@ -10,17 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""Container classes for holding backpropagation metadata.
-
-.. currentmodule:: qiskit_addon_obp.utils.metadata
-
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   OBPMetadata
-   SliceMetadata
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Container classes for holding backpropagation metadata."""
 
 from __future__ import annotations
 
