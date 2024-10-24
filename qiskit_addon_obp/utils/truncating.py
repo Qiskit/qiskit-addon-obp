@@ -10,8 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-Functions for truncating Pauli operators within given error budgets.
+"""Functions for truncating Pauli operators within given error budgets.
 
 .. currentmodule:: qiskit_addon_obp.utils.truncating
 
@@ -115,6 +114,7 @@ def setup_budget(
 
     Raises:
         ValueError: if ``max_error_per_slice`` and ``max_error_total`` are both ``None``.
+
     """
     if max_error_per_slice is None and max_error_total is None:
         raise ValueError("max_error_per_slice and max_error_total may not both be None")
@@ -168,6 +168,7 @@ def truncate_binary_search(
         .. note::
            The incurred truncation error bound, :math:`E`, is calculated as the ``p-norm`` of the
            truncated terms' coefficient magnitudes, :math:`c`, such that :math:`E = \|c\|_p`.
+
     """
     abscs = np.abs(observable.coeffs) ** p_norm
 

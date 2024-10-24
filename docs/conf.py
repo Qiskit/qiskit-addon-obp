@@ -140,6 +140,7 @@ GITHUB_BRANCH = determine_github_branch()
 
 
 def linkcode_resolve(domain, info):
+    """Add links to GitHub source code."""
     if domain != "py":
         return None
 
