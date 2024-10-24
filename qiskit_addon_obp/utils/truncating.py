@@ -37,7 +37,7 @@ from qiskit.quantum_info import SparsePauliOp
 class TruncationErrorBudget:
     """A class for storing the constants that determine the truncation error budget.
 
-    Refer to the `how-to guide <../how_tos/truncate_operator_terms.html>`__ for a detailed discussion
+    Refer to the `how-to guide <https://qiskit.github.io/qiskit-addon-obp/how_tos/truncate_operator_terms.html>`__ for a detailed discussion
     on truncating operator terms during backpropagation and bounding the incurred error.
     """
 
@@ -55,7 +55,7 @@ class TruncationErrorBudget:
     """
     Indicates which Lp-norm is used for calculating truncation errors.
 
-    Refer to the `how-to guide <../how_tos/bound_error_using_p_norm.html>`__ for a detailed
+    Refer to the `how-to guide <https://qiskit.github.io/qiskit-addon-obp/how_tos/bound_error_using_p_norm.html>`__ for a detailed
     conversation on bounding truncation error using higher Lp-norms.
     """
 
@@ -76,7 +76,7 @@ def setup_budget(
     This method makes the construction of a :class:`.TruncationErrorBudget` easier for an end-user.
     This error budget can be provided to the :meth:`~qiskit_addon_obp.backpropagate` method to
     enable the truncation of low-weight Pauli terms. Refer to the `how-to guide
-    <../how_tos/truncate_operator_terms.html>`__ for a detailed discussion on truncating terms from
+    <https://qiskit.github.io/qiskit-addon-obp/how_tos/truncate_operator_terms.html>`__ for a detailed discussion on truncating terms from
     the output operator and bounding the incurred error.
 
     The construction logic is as follows:
@@ -107,7 +107,7 @@ def setup_budget(
         num_slices: The number of slices over which to distribute the budget. See above for more details.
         p_norm: The Lp norm of the error. This affects the gradual distribution of
             ``max_error_total`` in the case of ``num_slices`` also being set (see above). Refer to the
-            `how-to guide <../how_tos/bound_error_using_p_norm.html>`__ for a detailed conversation
+            `how-to guide <https://qiskit.github.io/qiskit-addon-obp/how_tos/bound_error_using_p_norm.html>`__ for a detailed conversation
             on bounding truncation error using higher Lp-norms.
 
     Returns:
