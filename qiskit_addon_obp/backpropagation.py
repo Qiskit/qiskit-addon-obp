@@ -80,7 +80,7 @@ def backpropagate(
             tools provided in :external:mod:`qiskit_addon_utils.slicing` to slice a single
             :external:class:`~qiskit.circuit.QuantumCircuit`.
         truncation_error_budget: The error budget used for truncating Pauli terms. Refer to the
-            `how-to guide <../how_tos/truncate_operator_terms.html>`__ for a detailed discussion on
+            `how-to guide <https://qiskit.github.io/qiskit-addon-obp/how_tos/truncate_operator_terms.html>`__ for a detailed discussion on
             truncating terms from the output operator and bounding the incurred error.
         operator_budget: Constraints on how large the operator may grow during backpropagation. If
             ``None``, a default instance of :class:`~qiskit_addon_obp.utils.simplify.OperatorBudget`
