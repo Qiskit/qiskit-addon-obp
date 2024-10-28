@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+<<<<<<< HEAD
 """
 Functions for truncating Pauli operators within given error budgets.
 
@@ -23,6 +24,10 @@ Functions for truncating Pauli operators within given error budgets.
    setup_budget
    truncate_binary_search
 """
+=======
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Functions for truncating Pauli operators within given error budgets."""
+>>>>>>> 9675e1b (Reorganize API docs (#24))
 
 from __future__ import annotations
 

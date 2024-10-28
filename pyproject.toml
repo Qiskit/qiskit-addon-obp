@@ -79,6 +79,7 @@ docs = [
     "jupyter-sphinx",
     "sphinx-design",
     "sphinx-autodoc-typehints",
+    "sphinx-reredirects",
     "sphinx-copybutton",
     "nbsphinx>=0.9.4",
     "reno>=4.1",

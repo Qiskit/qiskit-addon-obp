@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+<<<<<<< HEAD
 """
 Utility functions for operator backpropagation.
 
@@ -23,6 +24,10 @@ Utility functions for operator backpropagation.
    to_global_op
    reduce_op
 """
+=======
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Utility functions for operator backpropagation."""
+>>>>>>> 9675e1b (Reorganize API docs (#24))
 
 from __future__ import annotations
 

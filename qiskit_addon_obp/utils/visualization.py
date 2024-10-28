@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+<<<<<<< HEAD
 """
 Various visualization utilities.
 
@@ -27,6 +28,10 @@ Various visualization utilities.
    plot_sum_paulis
    plot_num_qwc_groups
 """
+=======
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Various visualization utilities."""
+>>>>>>> 9675e1b (Reorganize API docs (#24))
 
 from __future__ import annotations
 

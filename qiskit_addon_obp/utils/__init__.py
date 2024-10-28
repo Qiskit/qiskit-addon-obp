@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+<<<<<<< HEAD
 """
 Utility functionality for conducting operator backpropagation.
 
@@ -24,3 +25,9 @@ Utility functionality for conducting operator backpropagation.
    truncating
    visualization
 """
+=======
+# Warning: this module is not documented and it does not have an RST file.
+# If we ever publicly expose interfaces users can import from this module,
+# we should set up its RST file.
+"""Utility functionality for conducting operator backpropagation."""
+>>>>>>> 9675e1b (Reorganize API docs (#24))

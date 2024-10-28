@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+<<<<<<< HEAD
 """
 Container classes for holding backpropagation metadata.
 
@@ -22,6 +23,10 @@ Container classes for holding backpropagation metadata.
    OBPMetadata
    SliceMetadata
 """
+=======
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Container classes for holding backpropagation metadata."""
+>>>>>>> 9675e1b (Reorganize API docs (#24))
 
 from __future__ import annotations
 
