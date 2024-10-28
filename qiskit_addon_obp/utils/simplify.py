@@ -89,6 +89,7 @@ def simplify(
 
     Returns:
         The simplified Pauli operator.
+
     """
     # Get default atol and rtol
     if atol is None:

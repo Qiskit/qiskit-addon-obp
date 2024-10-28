@@ -60,6 +60,7 @@ def apply_op_to(
     Raises:
         ValueError: The number of unique operator qargs must match the number of qubits in the
             corresponding operator.
+
     """
     _validate_qargs(op1, op1_qargs)
     _validate_qargs(op2, op2_qargs)
@@ -102,6 +103,7 @@ def to_global_op(op: SparsePauliOp, qargs: list[int], n_qubits: int) -> SparsePa
 
     Raises:
         ValueError: Qubit ID out of range
+
     """
     min_qargs = min(qargs)
     max_qargs = max(qargs)
@@ -124,8 +126,7 @@ def _validate_qargs(op: SparsePauliOp, qargs: list[int]) -> None:
 
 
 def reduce_op(global_op: SparsePauliOp) -> tuple[SparsePauliOp, list[int]]:
-    """
-    Create a lean representation of a global Pauli operator.
+    """Create a lean representation of a global Pauli operator.
 
     This function returns a lean representation of the input operator such that all
     of the qubits associated solely with Pauli-I terms have been removed. A list
@@ -150,6 +151,7 @@ def reduce_op(global_op: SparsePauliOp) -> tuple[SparsePauliOp, list[int]]:
 
     Raises:
         ValueError: Input operator may not be the identity operator.
+
     """
     pauli_strings = [p.to_label() for p in global_op.paulis]
     reduced_qargs = [
@@ -175,8 +177,7 @@ def apply_reset_to(
     qubit_id: int,
     inplace: bool = False,
 ) -> SparsePauliOp:
-    """
-    Apply a reset operation to a Pauli operator.
+    """Apply a reset operation to a Pauli operator.
 
     This function applies a reset operation to ``op`` in the following way:
 
@@ -193,6 +194,7 @@ def apply_reset_to(
 
     Returns:
         The transformed operator
+
     """
     if not inplace:
         op = op.copy()

@@ -147,6 +147,7 @@ class OBPMetadata:
 
         Returns:
             The accumulated error computed per the explanations above.
+
         """
         if slice_idx is None:
             slice_idx = self.num_backpropagated_slices  # pragma: no cover
@@ -188,6 +189,7 @@ class OBPMetadata:
 
         Returns:
             The left-over error budget computed per the explanations above.
+
         """
         if slice_idx is None:
             slice_idx = self.num_backpropagated_slices  # pragma: no cover
@@ -228,6 +230,7 @@ class OBPMetadata:
 
         Returns:
             The loaded metadata.
+
         """
         with open(json_file) as file:
             data = json.load(file)
@@ -250,6 +253,7 @@ class OBPMetadata:
         Args:
             json_file: the path to the file into which to dump the metadata.
             kwargs: keyword arguments to be passed on towards :meth:`.json.dump`.
+
         """
         with open(json_file, "w") as file:
             json.dump(asdict(self), file, **kwargs)
