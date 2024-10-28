@@ -1,6 +1,6 @@
-﻿=====================================================================
-Pauli operator simplfication (:mod:`qiskit_addon_obp.utils.simplify`)
-=====================================================================
+﻿======================================================================
+Pauli operator simplification (:mod:`qiskit_addon_obp.utils.simplify`)
+======================================================================
 
 .. automodule:: qiskit_addon_obp.utils.simplify
    :no-members:
