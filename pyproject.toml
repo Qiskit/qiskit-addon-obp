@@ -53,17 +53,15 @@ nbtest = [
     "nbmake>=1.5.0",
 ]
 style = [
-    "ruff==0.6.4",
+    "ruff==0.6.8",
     "nbqa>=1.8.5",
     "typos>=1.20.0",
 ]
 lint = [
     "qiskit-addon-obp[style]",
-    "pydocstyle==6.3.0",
     "mypy==1.11.2",
-    "pylint==3.2.7",
+    "pylint==3.3.1",
     "reno>=4.1",
-    "toml>=0.9.6",
 ]
 notebook-dependencies = [
     "qiskit-addon-obp",
@@ -79,6 +77,7 @@ docs = [
     "jupyter-sphinx",
     "sphinx-design",
     "sphinx-autodoc-typehints",
+    "sphinx-reredirects",
     "sphinx-copybutton",
     "nbsphinx>=0.9.4",
     "reno>=4.1",
@@ -138,6 +137,7 @@ select = [
     "I",   # isort
     "E",   # pycodestyle
     "W",   # pycodestyle
+    "D",   # pydocstyle
     "F",   # pyflakes
     "RUF", # ruff
     "UP",  # pyupgrade
@@ -153,8 +153,12 @@ ignore = [
 max-args = 6
 
 [tool.ruff.lint.extend-per-file-ignores]
+"test/**.py" = [
+    "D",  # pydocstyle
+]
 "docs/**/*" = [
     "E402", # module level import not at top of file
+    "D100", # missing docstring in public module
 ]
 
 [tool.ruff.lint.flake8-copyright]
@@ -171,6 +175,9 @@ notice-rgx = """
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals\\.
 """
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.typos.default.extend-words]
 IY = "IY"

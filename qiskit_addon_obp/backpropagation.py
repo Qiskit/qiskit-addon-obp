@@ -52,8 +52,7 @@ def backpropagate(
     operator_budget: OperatorBudget | None = None,
     max_seconds: int | None = None,
 ) -> tuple[list[SparsePauliOp], Sequence[QuantumCircuit], OBPMetadata]:
-    """
-    Backpropagate slices of quantum circuit operations onto the provided observables.
+    """Backpropagate slices of quantum circuit operations onto the provided observables.
 
     This function takes a (list of) observable(s) and backpropagates the provided quantum circuit
     slices **in reverse order** onto the observable(s) until one of the stopping criteria is reached.
@@ -80,7 +79,7 @@ def backpropagate(
             tools provided in :external:mod:`qiskit_addon_utils.slicing` to slice a single
             :external:class:`~qiskit.circuit.QuantumCircuit`.
         truncation_error_budget: The error budget used for truncating Pauli terms. Refer to the
-            `how-to guide <../how_tos/truncate_operator_terms.html>`__ for a detailed discussion on
+            `how-to guide <https://qiskit.github.io/qiskit-addon-obp/how_tos/truncate_operator_terms.html>`__ for a detailed discussion on
             truncating terms from the output operator and bounding the incurred error.
         operator_budget: Constraints on how large the operator may grow during backpropagation. If
             ``None``, a default instance of :class:`~qiskit_addon_obp.utils.simplify.OperatorBudget`
@@ -100,6 +99,7 @@ def backpropagate(
         ValueError: All observables and slices must act on equivalent numbers of qubits.
         ValueError: An input observable is larger than the constraints specified by ``operator_budget``.
         ValueError: ``operator_budget.max_paulis`` or ``operator_budget.max_qwc_groups`` is less than 1.
+
     """
     operator_budget = operator_budget or OperatorBudget()
     truncation_error_budget = truncation_error_budget or TruncationErrorBudget()

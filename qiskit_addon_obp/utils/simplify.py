@@ -10,19 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""
-Functions for simplifying Pauli operators.
-
-.. currentmodule:: qiskit_addon_obp.utils.simplify
-
-.. autosummary::
-   :toctree: ../stubs/
-   :nosignatures:
-
-   OperatorBudget
-   SimplifyMetadata
-   simplify
-"""
+# Reminder: update the RST file in docs/apidocs when adding new interfaces.
+"""Functions for simplifying Pauli operators."""
 
 from __future__ import annotations
 
@@ -100,6 +89,7 @@ def simplify(
 
     Returns:
         The simplified Pauli operator.
+
     """
     # Get default atol and rtol
     if atol is None:
