@@ -398,5 +398,5 @@ def plot_num_qwc_groups(metadata: OBPMetadata, axes: Axes, *, show_legend: bool 
 
 
 def _set_legend(axes: Axes, show_legend: bool) -> None:
-    if show_legend:
+    if show_legend:  # pragma: no cover
         axes.legend()
