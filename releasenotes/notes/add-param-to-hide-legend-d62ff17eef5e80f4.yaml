@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    A new parameter ``show_legend`` has been added to each function in the
+    :mod:`qiskit_addon_obp.utils.visualization` module that can show or hide the
+    legend on a plot. The legend is shown by default. This can be useful when
+    the legend becomes long and obstructs the plot.
