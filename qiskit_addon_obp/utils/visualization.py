@@ -36,7 +36,7 @@ def plot_accumulated_error(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
@@ -97,7 +97,7 @@ def plot_left_over_error_budget(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
@@ -144,7 +144,7 @@ def plot_slice_errors(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
@@ -198,7 +198,7 @@ def plot_num_paulis(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
@@ -245,7 +245,7 @@ def plot_num_truncated_paulis(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
@@ -299,7 +299,7 @@ def plot_sum_paulis(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
@@ -355,7 +355,7 @@ def plot_num_qwc_groups(metadata: OBPMetadata, axes: Axes) -> None:
        >>> metadata = OBPMetadata.from_json("docs/_static/dummy_visualization_metadata.json")
 
     .. plot::
-       :context:
+       :context: close-figs
        :include-source:
 
        >>> from matplotlib import pyplot as plt
