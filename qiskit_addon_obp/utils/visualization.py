@@ -77,7 +77,7 @@ def plot_accumulated_error(metadata: OBPMetadata, axes: Axes, *, show_legend: bo
                 metadata.accumulated_error(obs_idx, i)
                 for i in range(1, len(metadata.backpropagation_history) + 1)
             ],
-            label=f"Observable #{obs_idx+1}",
+            label=f"Observable #{obs_idx + 1}",
         )
     axes.set_xlabel("backpropagated slice number")
     axes.set_ylabel("accumulated error")
