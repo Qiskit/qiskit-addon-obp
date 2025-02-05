@@ -68,7 +68,7 @@ We use `GitHub issues <https://github.com/Qiskit/qiskit-addon-obp/issues/new/cho
 References
 ----------
 
-1. B. Fuller et al. 'Improved Quantum Computation using Operator Backpropagation' <https://arxiv.org/abs/2502.01897>_, arXiv:2502.01897 [quant-ph].
+1. B. Fuller et al. 'Improved Quantum Computation using Operator Backpropagation <https://arxiv.org/abs/2502.01897>'_, arXiv:2502.01897 [quant-ph].
 
 License
 -------
