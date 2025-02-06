@@ -65,6 +65,11 @@ By participating, you are expected to uphold Qiskit's `code of conduct <https://
 
 We use `GitHub issues <https://github.com/Qiskit/qiskit-addon-obp/issues/new/choose>`_ for tracking requests and bugs.
 
+References
+----------
+
+1. B. Fuller et al. `Improved Quantum Computation using Operator Backpropagation <https://arxiv.org/abs/2502.01897>`_, arXiv:2502.01897 [quant-ph].
+
 License
 -------
 
