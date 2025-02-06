@@ -198,7 +198,7 @@ def backpropagate(
 
                     if operator_budget.simplify:
                         observables_tmp[i], simplify_metadata = simplify_sparse_pauli_op(
-                            observables_tmp[i],
+                            observables_tmp[i]
                         )
                         slice_metadata.num_unique_paulis[i] = (  # type: ignore[index]
                             simplify_metadata.num_unique_paulis
