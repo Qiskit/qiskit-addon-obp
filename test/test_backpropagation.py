@@ -61,7 +61,15 @@ class TestBackpropagation(unittest.TestCase):
             self.assertEqual({Pauli("IX"), Pauli("IY")}, set(new_obs[0].paulis))
             self.assertEqual(0, len(slices))
             self.assertEqual([], slices)
-
+        with self.subTest("Depth-2"):
+            qc = QuantumCircuit(2)
+            qc.h(0)
+            qc.cx(0, 1)
+            obs = SparsePauliOp("ZZ")
+            target_obs = SparsePauliOp("ZI")
+            new_obs, slices, _ = backpropagate(obs, [qc])
+            self.assertEqual(target_obs, new_obs)
+            self.assertEqual([], slices)
         with self.subTest("Scattered qargs"):
             qc = QuantumCircuit(5)
             obs = SparsePauliOp("XIYIZ")
@@ -512,47 +520,35 @@ class TestBackpropagation(unittest.TestCase):
             new_obs, _, _ = backpropagate(
                 obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.1, p_norm=2)
             )
-            self.assertEqual(7, len(new_obs.paulis))
+            self.assertEqual(3, len(new_obs.paulis))
             self.assertEqual(
                 {
                     Pauli("XX"),
-                    Pauli("YX"),
-                    Pauli("ZX"),
+                    Pauli("XZ"),
                     Pauli("XY"),
-                    Pauli("YY"),
-                    Pauli("ZY"),
-                    Pauli("IZ"),
                 },
                 set(new_obs.paulis),
             )
             # Budget to truncate smallest term
             new_obs, _, _ = backpropagate(
-                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.2, p_norm=2)
+                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.26, p_norm=2)
             )
-            self.assertEqual(6, len(new_obs.paulis))
+            self.assertEqual(2, len(new_obs.paulis))
             self.assertEqual(
                 {
                     Pauli("XX"),
-                    Pauli("ZX"),
                     Pauli("XY"),
-                    Pauli("YY"),
-                    Pauli("ZY"),
-                    Pauli("IZ"),
                 },
                 set(new_obs.paulis),
             )
             # Budget to truncate 2 smallest terms
             new_obs, _, _ = backpropagate(
-                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.29, p_norm=2)
+                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.501, p_norm=2)
             )
-            self.assertEqual(5, len(new_obs.paulis))
+            self.assertEqual(1, len(new_obs.paulis))
             self.assertEqual(
                 {
-                    Pauli("XX"),
                     Pauli("XY"),
-                    Pauli("YY"),
-                    Pauli("ZY"),
-                    Pauli("IZ"),
                 },
                 set(new_obs.paulis),
             )

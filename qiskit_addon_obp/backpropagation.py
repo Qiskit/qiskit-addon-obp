@@ -164,7 +164,8 @@ def backpropagate(
             # PERF: we will likely need to parallelize this loop
             for i in range(num_observables):
                 non_trivial_slice = False
-                for op_idx, op_node in enumerate(circuit_to_dag(slice_).topological_op_nodes()):
+                op_nodes = reversed(list(circuit_to_dag(slice_).topological_op_nodes()))
+                for op_idx, op_node in enumerate(op_nodes):
                     # Ignore barriers within slices
                     if op_node.name == "barrier":
                         continue
