@@ -34,6 +34,7 @@ from .utils.operations import (
 from .utils.simplify import OperatorBudget
 from .utils.simplify import simplify as simplify_sparse_pauli_op
 from .utils.truncating import TruncationErrorBudget, truncate_binary_search
+from .utils.lindblad_noise import evolve_ple_spo
 
 LOGGER = logging.getLogger(__name__)
 
@@ -147,10 +148,18 @@ def backpropagate(
             slice_metadata = SliceMetadata(
                 slice_errors=[0.0] * num_observables,
                 raw_num_paulis=[0] * num_observables,
-                num_unique_paulis=[0] * num_observables if operator_budget.simplify else None,
-                num_duplicate_paulis=[0] * num_observables if operator_budget.simplify else None,
-                num_trimmed_paulis=[0] * num_observables if operator_budget.simplify else None,
-                sum_trimmed_coeffs=[0] * num_observables if operator_budget.simplify else None,
+                num_unique_paulis=[0] * num_observables
+                if operator_budget.simplify
+                else None,
+                num_duplicate_paulis=[0] * num_observables
+                if operator_budget.simplify
+                else None,
+                num_trimmed_paulis=[0] * num_observables
+                if operator_budget.simplify
+                else None,
+                sum_trimmed_coeffs=[0] * num_observables
+                if operator_budget.simplify
+                else None,
                 num_truncated_paulis=[0] * num_observables,
                 num_paulis=[0] * num_observables,
                 sum_paulis=None,
@@ -164,7 +173,9 @@ def backpropagate(
             # PERF: we will likely need to parallelize this loop
             for i in range(num_observables):
                 non_trivial_slice = False
-                for op_idx, op_node in enumerate(circuit_to_dag(slice_).topological_op_nodes()):
+                for op_idx, op_node in enumerate(
+                    circuit_to_dag(slice_).topological_op_nodes()
+                ):
                     # Ignore barriers within slices
                     if op_node.name == "barrier":
                         continue
@@ -183,7 +194,13 @@ def backpropagate(
                     non_trivial_slice = True
 
                     if op_node.name == "reset":
-                        observables_tmp[i] = apply_reset_to(observables_tmp[i], qargs_tmp[i][0])
+                        observables_tmp[i] = apply_reset_to(
+                            observables_tmp[i], qargs_tmp[i][0]
+                        )
+                    elif op_node.name == "LayerError":
+                        observables_tmp[i] = evolve_ple_spo(
+                            spo=observables_tmp[i], ple_instr=op_node.op
+                        )
                     else:
                         # Absorb gate into observable and update qubits on which the observable acts
                         observables_tmp[i], qargs_tmp[i] = apply_op_to(
@@ -197,8 +214,8 @@ def backpropagate(
                     slice_metadata.raw_num_paulis[i] = len(observables_tmp[i])
 
                     if operator_budget.simplify:
-                        observables_tmp[i], simplify_metadata = simplify_sparse_pauli_op(
-                            observables_tmp[i]
+                        observables_tmp[i], simplify_metadata = (
+                            simplify_sparse_pauli_op(observables_tmp[i])
                         )
                         slice_metadata.num_unique_paulis[i] = (  # type: ignore[index]
                             simplify_metadata.num_unique_paulis
@@ -225,7 +242,9 @@ def backpropagate(
                         metadata,
                         i,
                     )
-                    slice_metadata.num_truncated_paulis[i] = previous_size - len(observables_tmp[i])
+                    slice_metadata.num_truncated_paulis[i] = previous_size - len(
+                        observables_tmp[i]
+                    )
 
                 slice_metadata.num_paulis[i] = len(observables_tmp[i])
 
@@ -271,14 +290,17 @@ def backpropagate(
         if max_seconds is not None:
             signal.alarm(0)
 
-    LOGGER.info(f"Backpropagated {metadata.num_backpropagated_slices} DAG multi-graph slices")
+    LOGGER.info(
+        f"Backpropagated {metadata.num_backpropagated_slices} DAG multi-graph slices"
+    )
 
     # Return the slices which were not backpropagated
     slices_out = slices[: -metadata.num_backpropagated_slices]
 
     # Specify the output observables on all qubits in the circuit
     obs_out = [
-        to_global_op(obs, qargs, num_qubits) for obs, qargs in zip(observables_out, qargs_out)
+        to_global_op(obs, qargs, num_qubits)
+        for obs, qargs in zip(observables_out, qargs_out)
     ]
     # If the input was a single observable, return a single observable
     if isinstance(observables, SparsePauliOp):
@@ -320,7 +342,9 @@ def _validate_input_options(
     max_paulis = operator_budget.max_paulis
     max_qwc_groups = operator_budget.max_qwc_groups
     if max_paulis is not None and max_paulis < 1:
-        raise ValueError("Limiting the number of Pauli terms to less than 1 does not make sense.")
+        raise ValueError(
+            "Limiting the number of Pauli terms to less than 1 does not make sense."
+        )
     if max_qwc_groups is not None and max_qwc_groups < 1:
         raise ValueError(
             "Limiting the number of qubit-wise commmuting Pauli groups to less than 1 does not "
@@ -330,7 +354,9 @@ def _validate_input_options(
         # combine all observables as global ones into one large one
         all_paulis = SparsePauliOp.from_list([], num_qubits=num_qubits)
         for obs in global_observables:
-            all_paulis += SparsePauliOp.from_list([(pauli, 1) for pauli, _ in obs.label_iter()])
+            all_paulis += SparsePauliOp.from_list(
+                [(pauli, 1) for pauli, _ in obs.label_iter()]
+            )
         all_paulis = all_paulis.simplify()
 
         if max_paulis is not None:
@@ -377,7 +403,9 @@ def _truncate_terms(
         f"{accumulated_error:.10f}"
     )
 
-    metadata.backpropagation_history[slice_idx].slice_errors[observable_idx] = slice_error
+    metadata.backpropagation_history[slice_idx].slice_errors[observable_idx] = (
+        slice_error
+    )
 
     return observable_out
 
@@ -397,13 +425,17 @@ def _observable_oversized(
     max_qwc_groups = operator_budget.max_qwc_groups
     for obs, qargs_ in zip(observables, qargs):
         global_obs = to_global_op(obs, qargs_, num_qubits)
-        all_paulis += SparsePauliOp.from_list([(pauli, 1) for pauli, _ in global_obs.label_iter()])
+        all_paulis += SparsePauliOp.from_list(
+            [(pauli, 1) for pauli, _ in global_obs.label_iter()]
+        )
     all_paulis = all_paulis.simplify()
 
     if max_paulis is not None:
         slice_metadata.sum_paulis = len(all_paulis)
         if slice_metadata.sum_paulis > max_paulis:
-            LOGGER.info(f"[{slice_id:3}] Too many Pauli terms: {slice_metadata.sum_paulis}")
+            LOGGER.info(
+                f"[{slice_id:3}] Too many Pauli terms: {slice_metadata.sum_paulis}"
+            )
             return True
 
     if max_qwc_groups is not None:
@@ -422,7 +454,9 @@ def _get_observable_and_qargs_lists(
     observables: SparsePauliOp | Sequence[SparsePauliOp],
 ) -> tuple[list[SparsePauliOp], list[list[int]]]:
     """Ensure observables and qargs are lists."""
-    observable_list = [observables] if isinstance(observables, SparsePauliOp) else list(observables)
+    observable_list = (
+        [observables] if isinstance(observables, SparsePauliOp) else list(observables)
+    )
 
     # Get lean representations of the observables (reduced obs + qargs)
     obs_out = []
