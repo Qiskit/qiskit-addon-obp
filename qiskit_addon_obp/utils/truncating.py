@@ -168,7 +168,9 @@ def truncate_binary_search(
     lower_error = 0.0
 
     # binary search for a cutoff threshold
-    while ((upper_threshold - lower_threshold) > 1e-10) and not (np.isclose(upper_error, lower_error)):
+    while ((upper_threshold - lower_threshold) > 1e-10) and not (
+        np.isclose(upper_error, lower_error)
+    ):
         mid_threshold = (upper_threshold + lower_threshold) / 2
         # PERF: the boolean indexing here will need to check every element in the array at every
         # iteration of this loop. We can improve the performance by performing successive
