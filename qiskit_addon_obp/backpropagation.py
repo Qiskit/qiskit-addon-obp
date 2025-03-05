@@ -215,7 +215,7 @@ def backpropagate(
                         )
 
                     LOGGER.debug(
-                        f"Size of the observable after backpropagating gate id {len(op_nodes)-op_idx-1} in "
+                        f"Size of the observable after backpropagating gate id {len(op_nodes) - op_idx - 1} in "
                         f"the current layer: {len(observables_tmp[i])}"
                     )
 
