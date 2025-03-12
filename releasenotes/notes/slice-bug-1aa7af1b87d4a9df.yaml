@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Fixed a bug in :func:`qiskit_addon_obp.backpropagate` which caused slices with depth > 1 to be incorrectly forward-propagated. Gates from a given slice will now be correctly propagated into the observable in reverse order (i.e., from the back of the slice).
