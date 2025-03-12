@@ -66,55 +66,19 @@ class PauliLindbladErrorInstruction(Instruction):
         )
 
 
-class _PauliEvolutionData:
-    def __init__(
-        self,
-        gen: Pauli,
-        prop_pauli: Pauli,
-        prob: Optional[float] = None,
-        rate: Optional[float] = None,
-    ):
-        if prob is None and rate is None:
-            raise ValueError("must have either prob or rate defined")
-        if (prob is not None) and (rate is not None):
-            raise ValueError("cannot provide both rate and prob")
-
-        if prob is None:
-            prob_no_err = (1 + np.exp(-2 * rate)) / 2
-            prob = 1 - prob_no_err
-        if rate is None:
-            prob_no_err = 1 - prob
-            rate = -1 / 2 * np.log(2 * prob_no_err - 1)
-
-        self.rate = rate
-        self.prob = prob
-
-        self.gen = gen
-        self.prop_pauli = prop_pauli
-
-        self._ac = self.prop_pauli.anticommutes(self.gen)
-
-    @property
-    def fid(self):
-        if not self.anti_comm:
-            return 1.0
-        return 1 - 2.0 * self.prob
-
-    @property
-    def anti_comm(self):
-        return self._ac
-
-    @property
-    def comm(self):
-        return not self.anti_comm
-
-
 def evolve_pauli_lindblad_error_instruction(
     pauli: Pauli,
     ple_instr: PauliLindbladErrorInstruction,
 ) -> tuple[float, np.ndarray]:
     fid = 1.0
     for gen, rate in zip(ple_instr._ple.generators, ple_instr._ple.rates):
-        _ped = _PauliEvolutionData(rate=rate, gen=gen, prop_pauli=pauli)
-        fid *= _ped.fid
+        
+        prob_no_err = (1 + np.exp(-2 * rate)) / 2
+        prob = 1 - prob_no_err
+
+        if not pauli.anticommutes(gen):
+            fid *= 1.0
+        else:
+            fid *= 1 - 2.0 * prob
+
     return fid
