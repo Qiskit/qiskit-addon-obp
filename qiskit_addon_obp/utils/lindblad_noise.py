@@ -118,29 +118,3 @@ def evolve_pauli_lindblad_error_instruction(
         _ped = _PauliEvolutionData(rate=rate, gen=gen, prop_pauli=pauli)
         fid *= _ped.fid
     return fid
-
-
-def pauli_lindblad_error_to_qc(ple: PauliLindbladError, instr: bool = True):
-    qc_res = QuantumCircuit(ple.num_qubits)
-    p_id = Pauli("I" * ple.num_qubits)
-    for pauli, rate in zip(ple.generators, ple.rates):
-        if pauli == p_id:
-            continue
-        prob_no_err = (1 + np.exp(-2 * rate)) / 2
-        err = pauli_error([(pauli, 1 - prob_no_err), (p_id, prob_no_err)])
-        qc_res.append(err, qargs=range(qc_res.num_qubits))
-    if instr:
-        return qc_res.to_instruction(label=ple.label)
-    return qc_res
-
-
-def evolve_ple_spo(
-    spo: SparsePauliOp,
-    ple_instr: PauliLindbladErrorInstruction,
-):
-    coeffs_new = []
-    for pauli, coeff in zip(spo.paulis, spo.coeffs):
-        _coeff = coeff
-        _coeff *= evolve_pauli_lindblad_error_instruction(pauli, ple_instr)
-        coeffs_new.append(_coeff)
-    return SparsePauliOp(spo.paulis, coeffs_new)
