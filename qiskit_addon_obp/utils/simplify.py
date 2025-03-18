@@ -64,6 +64,12 @@ class OperatorBudget:
     simplify: bool = True
     """A flag denoting whether to call :func:`simplify` at every iteration."""
 
+    atol: float = 1e-8
+    """Absolute tolerance for checking if coefficients are zero."""
+
+    atol: float = 1e-8
+    """Relative tolerance for checking if coefficients are zero."""
+
     def is_active(self) -> bool:
         """Return whether ``self`` places any bounds on operator size."""
         return self.max_paulis is not None or self.max_qwc_groups is not None
