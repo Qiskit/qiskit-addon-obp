@@ -67,7 +67,7 @@ class OperatorBudget:
     atol: float = 1e-8
     """Absolute tolerance for checking if coefficients are zero."""
 
-    atol: float = 1e-8
+    rtol: float = 1e-8
     """Relative tolerance for checking if coefficients are zero."""
 
     def is_active(self) -> bool:
