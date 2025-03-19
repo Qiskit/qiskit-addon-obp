@@ -870,7 +870,6 @@ class TestBackpropagation(unittest.TestCase):
             with self.assertRaises(ValueError):
                 backpropagate(obs, slices, operator_budget=op_budget)
 
-    # pragma: no cover
     def test_backpropagate_timeout(self):
         qc = QuantumCircuit(2)
         qc.rx(0.1, 0)
