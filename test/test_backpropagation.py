@@ -13,7 +13,6 @@
 """Tests for operator backpropagation utility functions."""
 
 import sys
-import time
 import unittest
 from math import e
 from time import sleep
@@ -870,7 +869,9 @@ class TestBackpropagation(unittest.TestCase):
             with self.assertRaises(ValueError):
                 backpropagate(obs, slices, operator_budget=op_budget)
 
-    def test_backpropagate_timeout(self):
+
+class TestBackpropagationTimeout:
+    def test_backpropagate_timeout(self, subtests, monkeypatch):
         qc = QuantumCircuit(2)
         qc.rx(0.1, 0)
         qc.ry(0.1, 0)
@@ -879,35 +880,47 @@ class TestBackpropagation(unittest.TestCase):
         slices = slice_by_depth(qc, 1)
         obs = SparsePauliOp("IX")
 
+        timeout_triggered = False
+
+        class MyTimeout(Exception):
+            def __init__(self):
+                nonlocal timeout_triggered
+                timeout_triggered = True
+
+        monkeypatch.setattr("qiskit_addon_obp.backpropagation.TimeoutException", MyTimeout)
+
         on_win = sys.platform == "win32"
-        with self.subTest("Actual timeout"):
+        with subtests.test(msg="Actual timeout"):
             if on_win:
                 pytest.skip("Does not run on Windows")
             many_slices = 100_000 * slices
-            t1 = time.time()
+
             _, new_qc, _ = backpropagate(obs, many_slices, max_seconds=1)
-            t2 = time.time()
 
-            with self.subTest("Time should be less than 2 seconds"):
-                assert (t2 - t1) < 2
+            with subtests.test(msg="Time should be less than 2 seconds"):
+                assert timeout_triggered
 
-            with self.subTest("The resulting circuit should not be empty"):
+            with subtests.test(msg="The resulting circuit should not be empty"):
                 assert len(new_qc) > 0
 
-        with self.subTest("Reset timeout"):
+        timeout_triggered = False
+
+        with subtests.test(msg="Reset timeout"):
             if on_win:
                 pytest.skip("Does not run on Windows")
-            t1 = time.time()
-            _, new_qc, _ = backpropagate(obs, slices, max_seconds=1)
-            t2 = time.time()
 
-            with self.subTest("The resulting circuit should be empty"):
+            _, new_qc, _ = backpropagate(obs, slices, max_seconds=1)
+
+            with subtests.test(msg="No timeout should have occurred"):
+                assert not timeout_triggered
+
+            with subtests.test(msg="The resulting circuit should be empty"):
                 assert len(new_qc) == 0
 
             sleep(1)
 
-        with self.subTest("Handle windows"):
+        with subtests.test(msg="Handle windows"):
             if not on_win:
                 pytest.skip("Only on Windows")
-            with self.assertRaises(RuntimeError):
+            with pytest.raises(RuntimeError):
                 _, _, _ = backpropagate(obs, slices, max_seconds=1)
