@@ -922,5 +922,5 @@ class TestBackpropagationTimeout:
         with subtests.test(msg="Handle windows"):
             if not on_win:
                 pytest.skip("Only on Windows")
-            with self.assertRaises(RuntimeError):
+            with pytest.raises(RuntimeError):
                 _, _, _ = backpropagate(obs, slices, max_seconds=1)
