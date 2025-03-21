@@ -109,6 +109,9 @@ ignore_missing_imports = true
 
 [tool.pylint.main]
 py-version = "3.9"
+load-plugins = [
+    "pylint.extensions.no_self_use",
+]
 
 [tool.pylint."messages control"]
 disable = ["all"]
@@ -166,7 +169,7 @@ max-args = 6
 notice-rgx = """
 # This code is a Qiskit project.
 #
-# \\(C\\) Copyright IBM 2024\\.
+# \\(C\\) Copyright IBM \\d{4}((,\\s)\\d{4})*\\.
 #
 # This code is licensed under the Apache License, Version 2\\.0\\. You may
 # obtain a copy of this license in the LICENSE\\.txt file in the root directory
