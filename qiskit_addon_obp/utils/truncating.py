@@ -49,8 +49,8 @@ class TruncationErrorBudget:
     """
 
     tol: float = 1e-8
-    """Tolerance used during truncation. Once an optimal threshold, up to this tolerance,
-    has been found, the search for an optimal truncation threshold will stop.
+    """Absolute tolerance used during truncation. Once an optimal truncation threshold, up
+    to this tolerance, has been found, the search for an optimal threshold will stop.
     """
 
     def is_active(self) -> bool:
