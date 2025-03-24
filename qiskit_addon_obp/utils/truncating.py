@@ -194,7 +194,7 @@ def truncate_binary_search(
             upper_error = mid_error
 
     # delete according to lower_threshold
-    to_keep = abscs >= lower_threshold
+    to_keep = abscs > lower_threshold
 
     return (
         SparsePauliOp(observable.paulis[to_keep], observable.coeffs[to_keep]),
