@@ -11,8 +11,8 @@
     "max_paulis": 50,
     "max_qwc_groups": 12,
     "simplify": true,
-    "atol": 1e-08,
-    "rtol": 1e-08
+    "atol": null,
+    "rtol": null
   },
   "backpropagation_history": [
     {
