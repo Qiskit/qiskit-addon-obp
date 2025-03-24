@@ -169,10 +169,12 @@ def truncate_binary_search(
 
     """
     abscs = np.abs(observable.coeffs) ** p_norm
+
     upper_threshold = max(abscs)
     lower_threshold = 0.0
     upper_error = budget
     lower_error = 0.0
+    
     # binary search for a cutoff threshold
     while ((upper_threshold - lower_threshold) > tol) and not (
         np.isclose(upper_error, lower_error, atol=tol)
