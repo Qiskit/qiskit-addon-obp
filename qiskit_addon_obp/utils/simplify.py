@@ -64,11 +64,11 @@ class OperatorBudget:
     simplify: bool = True
     """A flag denoting whether to call :func:`simplify` at every iteration."""
 
-    atol: float = 1e-8
-    """Absolute tolerance for checking if coefficients are zero."""
+    atol: float | None = None
+    """Absolute tolerance for checking if coefficients are zero. Defaults to :meth:`qiskit.quantum_info.SparsePauliOp.simplify` value."""
 
-    rtol: float = 1e-8
-    """Relative tolerance for checking if coefficients are zero."""
+    rtol: float | None = None
+    """Relative tolerance for checking if coefficients are zero. Defaults to :meth:`qiskit.quantum_info.SparsePauliOp.simplify` value."""
 
     def is_active(self) -> bool:
         """Return whether ``self`` places any bounds on operator size."""
