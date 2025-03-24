@@ -369,6 +369,7 @@ def _truncate_terms(
         observable,
         left_over_error_budget,
         p_norm=p_norm,
+        tol=metadata.truncation_error_budget.atol,
     )
 
     accumulated_error = metadata.accumulated_error(observable_idx, slice_idx + 1)

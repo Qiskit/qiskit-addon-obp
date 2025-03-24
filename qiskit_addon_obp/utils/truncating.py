@@ -48,6 +48,11 @@ class TruncationErrorBudget:
     conversation on bounding truncation error using higher Lp-norms.
     """
 
+    tol: float = 1e-8
+    """Tolerance used during truncation. Once an optimal threshold, up to this tolerance,
+    has been found, the search for an optimal truncation threshold will stop.
+    """
+
     def is_active(self) -> bool:
         """Return whether the truncation is active, i.e. whether the budget is non-zero."""
         return any(budget > 0 for budget in self.per_slice_budget) and self.max_error_total > 0
@@ -141,6 +146,7 @@ def truncate_binary_search(
     budget: float,
     *,
     p_norm: int = 1,
+    tol: float | None = None,
 ) -> tuple[SparsePauliOp, float]:
     r"""Perform binary search to find an optimal observable truncation threshold.
 
@@ -151,6 +157,8 @@ def truncate_binary_search(
         observable: the ``SparsePauliOp`` to truncate terms from.
         budget: the maximum permissable truncation error.
         p_norm: an integer specifying what p-norm to use.
+        tol: when the binary search thresholds differ by an amount smaller than ``tol``, the
+            threshold search will stop.
 
     Returns:
         The truncated observable and a bound on the incurred truncation error.
@@ -160,13 +168,14 @@ def truncate_binary_search(
            truncated terms' coefficient magnitudes, :math:`c`, such that :math:`E = \|c\|_p`.
 
     """
-    abscs = np.abs(observable.coeffs) ** p_norm
+    # Use Qiskit default tolerance of 1e-8
+    tol = tol or 1e-8
 
+    abscs = np.abs(observable.coeffs) ** p_norm
     upper_threshold = max(abscs)
     lower_threshold = 0.0
     upper_error = budget
     lower_error = 0.0
-
     # binary search for a cutoff threshold
     while ((upper_threshold - lower_threshold) > 1e-10) and not (
         np.isclose(upper_error, lower_error)
