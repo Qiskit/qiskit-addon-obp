@@ -146,7 +146,7 @@ def truncate_binary_search(
     budget: float,
     *,
     p_norm: int = 1,
-    tol: float | None = None,
+    tol: float = 1e-8,
 ) -> tuple[SparsePauliOp, float]:
     r"""Perform binary search to find an optimal observable truncation threshold.
 
@@ -168,9 +168,6 @@ def truncate_binary_search(
            truncated terms' coefficient magnitudes, :math:`c`, such that :math:`E = \|c\|_p`.
 
     """
-    # Use Qiskit default tolerance of 1e-8
-    tol = tol or 1e-8
-
     abscs = np.abs(observable.coeffs) ** p_norm
     upper_threshold = max(abscs)
     lower_threshold = 0.0
