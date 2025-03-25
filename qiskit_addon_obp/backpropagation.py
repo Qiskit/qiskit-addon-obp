@@ -28,13 +28,13 @@ from .utils.metadata import OBPMetadata, SliceMetadata
 from .utils.operations import (
     apply_op_to,
     apply_reset_to,
+    apply_ple_to,
     reduce_op,
     to_global_op,
 )
 from .utils.simplify import OperatorBudget
 from .utils.simplify import simplify as simplify_sparse_pauli_op
 from .utils.truncating import TruncationErrorBudget, truncate_binary_search
-from .utils.lindblad_noise import evolve_ple_spo
 
 LOGGER = logging.getLogger(__name__)
 
@@ -194,11 +194,11 @@ def backpropagate(
 
                     if op_node.name == "reset":
                         observables_tmp[i] = apply_reset_to(
-                            observables_tmp[i], qargs_tmp[i][0]
+                            op=observables_tmp[i], qubit_id=qargs_tmp[i][0]
                         )
                     elif op_node.name == "LayerError":
-                        observables_tmp[i] = evolve_ple_spo(
-                            spo=observables_tmp[i], ple_instr=op_node.op
+                        observables_tmp[i] = apply_ple_to(
+                            op=observables_tmp[i], ple_instr=op_node.op
                         )
                     else:
                         # Absorb gate into observable and update qubits on which the observable acts

@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 from qiskit.quantum_info import SparsePauliOp
+from .lindblad_noise import evolve_pauli_lindblad_error_instruction
 
 
 def apply_op_to(
@@ -204,3 +205,24 @@ def apply_reset_to(
     op.paulis.x[:, qubit_id] = False
 
     return op
+
+
+def apply_ple_to(
+    op: SparsePauliOp,
+    ple_instr: PauliLindbladErrorInstruction,
+):
+    """
+     TODO: Flesh this out more
+
+     Apply Pauli Lindblad Error intruction ``𝑳`` to a SparsePauliOp by
+     evolving the ``op`` under ``𝑳`` in the following way:
+
+        ``𝑳†•op•𝑳``
+
+    """
+    coeffs_new = []
+    for pauli, coeff in zip(op.paulis, op.coeffs):
+        _coeff = coeff
+        _coeff *= evolve_pauli_lindblad_error_instruction(pauli, ple_instr)
+        coeffs_new.append(_coeff)
+    return SparsePauliOp(op.paulis, coeffs_new)
