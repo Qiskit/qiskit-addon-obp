@@ -872,6 +872,7 @@ class TestBackpropagation(unittest.TestCase):
 
 class TestBackpropagationTimeout:
     def test_backpropagate_timeout(self, subtests, monkeypatch):
+        # pylint: disable=no-self-use
         qc = QuantumCircuit(2)
         qc.rx(0.1, 0)
         qc.ry(0.1, 0)
