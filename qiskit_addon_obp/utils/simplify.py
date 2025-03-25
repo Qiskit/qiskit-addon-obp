@@ -64,6 +64,14 @@ class OperatorBudget:
     simplify: bool = True
     """A flag denoting whether to call :func:`simplify` at every iteration."""
 
+    atol: float | None = None
+    """Absolute tolerance for checking if coefficients are zero. Defaults to the
+    :attr:`~qiskit.quantum_info.SparsePauliOp.atol` value of ``SparsePauliOp``."""
+
+    rtol: float | None = None
+    """Relative tolerance for checking if coefficients are zero. Defaults to the
+    :attr:`~qiskit.quantum_info.SparsePauliOp.rtol` value of ``Sparse``."""
+
     def is_active(self) -> bool:
         """Return whether ``self`` places any bounds on operator size."""
         return self.max_paulis is not None or self.max_qwc_groups is not None
