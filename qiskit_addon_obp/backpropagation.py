@@ -164,7 +164,8 @@ def backpropagate(
             # PERF: we will likely need to parallelize this loop
             for i in range(num_observables):
                 non_trivial_slice = False
-                for op_idx, op_node in enumerate(circuit_to_dag(slice_).topological_op_nodes()):
+                op_nodes = list(circuit_to_dag(slice_).topological_op_nodes())[::-1]
+                for op_idx, op_node in enumerate(op_nodes):
                     # Ignore barriers within slices
                     if op_node.name == "barrier":
                         continue
@@ -198,7 +199,9 @@ def backpropagate(
 
                     if operator_budget.simplify:
                         observables_tmp[i], simplify_metadata = simplify_sparse_pauli_op(
-                            observables_tmp[i]
+                            observables_tmp[i],
+                            atol=operator_budget.atol,
+                            rtol=operator_budget.rtol,
                         )
                         slice_metadata.num_unique_paulis[i] = (  # type: ignore[index]
                             simplify_metadata.num_unique_paulis
@@ -214,7 +217,7 @@ def backpropagate(
                         )
 
                     LOGGER.debug(
-                        f"Size of the observable after backpropagating the {op_idx}-th gate in "
+                        f"Size of the observable after backpropagating gate id {len(op_nodes) - op_idx - 1} in "
                         f"the current layer: {len(observables_tmp[i])}"
                     )
 

@@ -13,7 +13,6 @@
 """Tests for operator backpropagation utility functions."""
 
 import sys
-import time
 import unittest
 from math import e
 from time import sleep
@@ -61,7 +60,15 @@ class TestBackpropagation(unittest.TestCase):
             self.assertEqual({Pauli("IX"), Pauli("IY")}, set(new_obs[0].paulis))
             self.assertEqual(0, len(slices))
             self.assertEqual([], slices)
-
+        with self.subTest("Depth-2"):
+            qc = QuantumCircuit(2)
+            qc.h(0)
+            qc.cx(0, 1)
+            obs = SparsePauliOp("ZZ")
+            target_obs = SparsePauliOp("ZI")
+            new_obs, slices, _ = backpropagate(obs, [qc])
+            self.assertEqual(target_obs, new_obs)
+            self.assertEqual([], slices)
         with self.subTest("Scattered qargs"):
             qc = QuantumCircuit(5)
             obs = SparsePauliOp("XIYIZ")
@@ -512,47 +519,35 @@ class TestBackpropagation(unittest.TestCase):
             new_obs, _, _ = backpropagate(
                 obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.1, p_norm=2)
             )
-            self.assertEqual(7, len(new_obs.paulis))
+            self.assertEqual(3, len(new_obs.paulis))
             self.assertEqual(
                 {
                     Pauli("XX"),
-                    Pauli("YX"),
-                    Pauli("ZX"),
+                    Pauli("XZ"),
                     Pauli("XY"),
-                    Pauli("YY"),
-                    Pauli("ZY"),
-                    Pauli("IZ"),
                 },
                 set(new_obs.paulis),
             )
             # Budget to truncate smallest term
             new_obs, _, _ = backpropagate(
-                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.2, p_norm=2)
+                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.26, p_norm=2)
             )
-            self.assertEqual(6, len(new_obs.paulis))
+            self.assertEqual(2, len(new_obs.paulis))
             self.assertEqual(
                 {
                     Pauli("XX"),
-                    Pauli("ZX"),
                     Pauli("XY"),
-                    Pauli("YY"),
-                    Pauli("ZY"),
-                    Pauli("IZ"),
                 },
                 set(new_obs.paulis),
             )
             # Budget to truncate 2 smallest terms
             new_obs, _, _ = backpropagate(
-                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.29, p_norm=2)
+                obs, [qc], truncation_error_budget=setup_budget(max_error_total=0.501, p_norm=2)
             )
-            self.assertEqual(5, len(new_obs.paulis))
+            self.assertEqual(1, len(new_obs.paulis))
             self.assertEqual(
                 {
-                    Pauli("XX"),
                     Pauli("XY"),
-                    Pauli("YY"),
-                    Pauli("ZY"),
-                    Pauli("IZ"),
                 },
                 set(new_obs.paulis),
             )
@@ -874,7 +869,10 @@ class TestBackpropagation(unittest.TestCase):
             with self.assertRaises(ValueError):
                 backpropagate(obs, slices, operator_budget=op_budget)
 
-    def test_backpropagate_timeout(self):
+
+class TestBackpropagationTimeout:
+    def test_backpropagate_timeout(self, subtests, monkeypatch):
+        # pylint: disable=no-self-use
         qc = QuantumCircuit(2)
         qc.rx(0.1, 0)
         qc.ry(0.1, 0)
@@ -883,35 +881,47 @@ class TestBackpropagation(unittest.TestCase):
         slices = slice_by_depth(qc, 1)
         obs = SparsePauliOp("IX")
 
+        timeout_triggered = False
+
+        class MyTimeout(Exception):
+            def __init__(self):
+                nonlocal timeout_triggered
+                timeout_triggered = True
+
+        monkeypatch.setattr("qiskit_addon_obp.backpropagation.TimeoutException", MyTimeout)
+
         on_win = sys.platform == "win32"
-        with self.subTest("Actual timeout"):
+        with subtests.test(msg="Actual timeout"):
             if on_win:
                 pytest.skip("Does not run on Windows")
             many_slices = 100_000 * slices
-            t1 = time.time()
+
             _, new_qc, _ = backpropagate(obs, many_slices, max_seconds=1)
-            t2 = time.time()
 
-            with self.subTest("Time should be less than 2 seconds"):
-                assert (t2 - t1) < 2
+            with subtests.test(msg="Time should be less than 2 seconds"):
+                assert timeout_triggered
 
-            with self.subTest("The resulting circuit should not be empty"):
+            with subtests.test(msg="The resulting circuit should not be empty"):
                 assert len(new_qc) > 0
 
-        with self.subTest("Reset timeout"):
+        timeout_triggered = False
+
+        with subtests.test(msg="Reset timeout"):
             if on_win:
                 pytest.skip("Does not run on Windows")
-            t1 = time.time()
-            _, new_qc, _ = backpropagate(obs, slices, max_seconds=1)
-            t2 = time.time()
 
-            with self.subTest("The resulting circuit should be empty"):
+            _, new_qc, _ = backpropagate(obs, slices, max_seconds=1)
+
+            with subtests.test(msg="No timeout should have occurred"):
+                assert not timeout_triggered
+
+            with subtests.test(msg="The resulting circuit should be empty"):
                 assert len(new_qc) == 0
 
             sleep(1)
 
-        with self.subTest("Handle windows"):
+        with subtests.test(msg="Handle windows"):
             if not on_win:
                 pytest.skip("Only on Windows")
-            with self.assertRaises(RuntimeError):
+            with pytest.raises(RuntimeError):
                 _, _, _ = backpropagate(obs, slices, max_seconds=1)
