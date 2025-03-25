@@ -35,8 +35,8 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 3)
-            self.assertEqual(metadata.num_duplicate_paulis, 4)
-            self.assertEqual(metadata.num_trimmed_paulis, 5)
+            self.assertEqual(metadata.num_duplicate_paulis, 3)
+            self.assertEqual(metadata.num_trimmed_paulis, 2)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 
     def test_simplify_zero(self):
@@ -55,8 +55,8 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 3)
-            self.assertEqual(metadata.num_duplicate_paulis, 11)
-            self.assertEqual(metadata.num_trimmed_paulis, 14)
+            self.assertEqual(metadata.num_duplicate_paulis, 9)
+            self.assertEqual(metadata.num_trimmed_paulis, 5)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 
     def test_simplify_parameters(self):
@@ -74,8 +74,8 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 3)
-            self.assertEqual(metadata.num_duplicate_paulis, 4)
-            self.assertEqual(metadata.num_trimmed_paulis, 5)
+            self.assertEqual(metadata.num_duplicate_paulis, 3)
+            self.assertEqual(metadata.num_trimmed_paulis, 2)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 
     def test_simplify_no_op(self):
@@ -107,10 +107,7 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 2)
-            # FIXME: the following fails due to a known bug. The `num_duplicate_paulis` cannot
-            # differentiate between actual duplicates and values which have been trimmed due to the
-            # chosen tolerances.
-            # self.assertEqual(metadata.num_duplicate_paulis, 0)
+            self.assertEqual(metadata.num_duplicate_paulis, 0)
             self.assertEqual(metadata.num_trimmed_paulis, 2)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 

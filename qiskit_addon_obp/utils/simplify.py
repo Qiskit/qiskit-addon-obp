@@ -127,8 +127,8 @@ def simplify(
 
     metadata = SimplifyMetadata(
         num_unique_paulis=len(indexes),
-        num_duplicate_paulis=len(operator.coeffs) - len(indexes),
-        num_trimmed_paulis=len(operator.coeffs) - len(indexes),
+        num_duplicate_paulis=len(nz_coeffs) - len(indexes),
+        num_trimmed_paulis=len(operator.coeffs) - len(nz_coeffs),
         sum_trimmed_coeffs=0.0,
     )
 
