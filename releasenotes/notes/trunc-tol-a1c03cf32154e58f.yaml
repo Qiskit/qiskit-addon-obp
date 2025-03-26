@@ -1,6 +1,6 @@
 ---
 features:
   - |
-    :func:`qiskit_addon_obp.utils.truncating.truncate_binary_search` now accepts a ``tol`` kwarg. Once an optimal truncation threshold, up to this value, has been found, the search for an optimal threshold will stop.
+    :func:`~.truncate_binary_search` now accepts a ``tol`` kwarg. Once an optimal truncation threshold, up to this value, has been found, the search for an optimal threshold will stop.
 
-    :class:`qiskit_addon_obp.utils.truncating.TruncationErrorBudget` now holds a ``tol`` field. This field is used by :func:`qiskit_addon_obp.backpropagate` as the ``tol`` argument to :func:`qiskit_addon_obp.utils.truncating.truncate_binary_search`.
+    :class:`~.TruncationErrorBudget` now holds a ``tol`` field. This field is used by :func:`~.backpropagate` as the ``tol`` argument to :func:`~.truncate_binary_search`.
