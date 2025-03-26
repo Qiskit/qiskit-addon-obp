@@ -66,81 +66,19 @@ class PauliLindbladErrorInstruction(Instruction):
         )
 
 
-class _PauliEvolutionData:
-    def __init__(
-        self,
-        gen: Pauli,
-        prop_pauli: Pauli,
-        prob: Optional[float] = None,
-        rate: Optional[float] = None,
-    ):
-        if prob is None and rate is None:
-            raise ValueError("must have either prob or rate defined")
-        if (prob is not None) and (rate is not None):
-            raise ValueError("cannot provide both rate and prob")
-
-        if prob is None:
-            prob_no_err = (1 + np.exp(-2 * rate)) / 2
-            prob = 1 - prob_no_err
-        if rate is None:
-            prob_no_err = 1 - prob
-            rate = -1 / 2 * np.log(2 * prob_no_err - 1)
-
-        self.rate = rate
-        self.prob = prob
-
-        self.gen = gen
-        self.prop_pauli = prop_pauli
-
-        self._ac = self.prop_pauli.anticommutes(self.gen)
-
-    @property
-    def fid(self):
-        if not self.anti_comm:
-            return 1.0
-        return 1 - 2.0 * self.prob
-
-    @property
-    def anti_comm(self):
-        return self._ac
-
-    @property
-    def comm(self):
-        return not self.anti_comm
-
-
 def evolve_pauli_lindblad_error_instruction(
     pauli: Pauli,
     ple_instr: PauliLindbladErrorInstruction,
 ) -> tuple[float, np.ndarray]:
     fid = 1.0
     for gen, rate in zip(ple_instr._ple.generators, ple_instr._ple.rates):
-        _ped = _PauliEvolutionData(rate=rate, gen=gen, prop_pauli=pauli)
-        fid *= _ped.fid
-    return fid
-
-
-def pauli_lindblad_error_to_qc(ple: PauliLindbladError, instr: bool = True):
-    qc_res = QuantumCircuit(ple.num_qubits)
-    p_id = Pauli("I" * ple.num_qubits)
-    for pauli, rate in zip(ple.generators, ple.rates):
-        if pauli == p_id:
-            continue
+        
         prob_no_err = (1 + np.exp(-2 * rate)) / 2
-        err = pauli_error([(pauli, 1 - prob_no_err), (p_id, prob_no_err)])
-        qc_res.append(err, qargs=range(qc_res.num_qubits))
-    if instr:
-        return qc_res.to_instruction(label=ple.label)
-    return qc_res
+        prob = 1 - prob_no_err
 
+        if not pauli.anticommutes(gen):
+            fid *= 1.0
+        else:
+            fid *= 1 - 2.0 * prob
 
-def evolve_ple_spo(
-    spo: SparsePauliOp,
-    ple_instr: PauliLindbladErrorInstruction,
-):
-    coeffs_new = []
-    for pauli, coeff in zip(spo.paulis, spo.coeffs):
-        _coeff = coeff
-        _coeff *= evolve_pauli_lindblad_error_instruction(pauli, ple_instr)
-        coeffs_new.append(_coeff)
-    return SparsePauliOp(spo.paulis, coeffs_new)
+    return fid

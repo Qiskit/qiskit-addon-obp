@@ -28,13 +28,13 @@ from .utils.metadata import OBPMetadata, SliceMetadata
 from .utils.operations import (
     apply_op_to,
     apply_reset_to,
+    apply_ple_to,
     reduce_op,
     to_global_op,
 )
 from .utils.simplify import OperatorBudget
 from .utils.simplify import simplify as simplify_sparse_pauli_op
 from .utils.truncating import TruncationErrorBudget, truncate_binary_search
-from .utils.lindblad_noise import evolve_ple_spo
 
 LOGGER = logging.getLogger(__name__)
 
@@ -178,9 +178,8 @@ def backpropagate(
             # PERF: we will likely need to parallelize this loop
             for i in range(num_observables):
                 non_trivial_slice = False
-                for op_idx, op_node in enumerate(
-                    circuit_to_dag(slice_).topological_op_nodes()
-                ):
+                op_nodes = list(circuit_to_dag(slice_).topological_op_nodes())[::-1]
+                for op_idx, op_node in enumerate(op_nodes):
                     # Ignore barriers within slices
                     if op_node.name == "barrier":
                         continue
@@ -200,11 +199,11 @@ def backpropagate(
 
                     if op_node.name == "reset":
                         observables_tmp[i] = apply_reset_to(
-                            observables_tmp[i], qargs_tmp[i][0]
+                            op=observables_tmp[i], qubit_id=qargs_tmp[i][0]
                         )
                     elif op_node.name == "LayerError":
-                        observables_tmp[i] = evolve_ple_spo(
-                            spo=observables_tmp[i], ple_instr=op_node.op
+                        observables_tmp[i] = apply_ple_to(
+                            op=observables_tmp[i], ple_instr=op_node.op
                         )
                     else:
                         # Absorb gate into observable and update qubits on which the observable acts
@@ -236,7 +235,7 @@ def backpropagate(
                         )
 
                     LOGGER.debug(
-                        f"Size of the observable after backpropagating the {op_idx}-th gate in "
+                        f"Size of the observable after backpropagating gate id {len(op_nodes) - op_idx - 1} in "
                         f"the current layer: {len(observables_tmp[i])}"
                     )
 
