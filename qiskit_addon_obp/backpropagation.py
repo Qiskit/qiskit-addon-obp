@@ -147,7 +147,9 @@ def backpropagate(
             slice_metadata = SliceMetadata(
                 slice_errors=[0.0] * num_observables,
                 raw_num_paulis=[0] * num_observables,
-                num_unique_paulis=[0] * num_observables if operator_budget.simplify else None,
+                num_unique_paulis=[len(op) for op in observables_tmp]
+                if operator_budget.simplify
+                else None,
                 num_duplicate_paulis=[0] * num_observables if operator_budget.simplify else None,
                 num_trimmed_paulis=[0] * num_observables if operator_budget.simplify else None,
                 sum_trimmed_coeffs=[0] * num_observables if operator_budget.simplify else None,

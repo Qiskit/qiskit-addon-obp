@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The reported number of unique Paulis in :attr:`~.SimplifyMetadata.num_unique_paulis`
+    is now correct in cases where all gates in a slice commute with an observable.

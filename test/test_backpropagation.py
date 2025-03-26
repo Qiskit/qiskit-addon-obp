@@ -868,6 +868,16 @@ class TestBackpropagation(unittest.TestCase):
             op_budget = OperatorBudget(max_qwc_groups=1)
             with self.assertRaises(ValueError):
                 backpropagate(obs, slices, operator_budget=op_budget)
+        with self.subTest("Correct num_unique_paulis"):
+            # This is a regression test against https://github.com/Qiskit/qiskit-addon-obp/issues/21
+            qc = QuantumCircuit(2)
+            qc.x(0)
+            obs = [SparsePauliOp("ZI"), SparsePauliOp(["XX"])]
+            new_obs, _, metadata = backpropagate(obs, [qc])
+            self.assertEqual(1, len(new_obs[0]))
+            self.assertEqual(1, len(new_obs[1]))
+            self.assertEqual(1, metadata.backpropagation_history[0].num_unique_paulis[0])
+            self.assertEqual(1, metadata.backpropagation_history[0].num_unique_paulis[1])
 
 
 class TestBackpropagationTimeout:
