@@ -2,10 +2,14 @@ name: Citation preview
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - 'stable/**'
     paths: ['CITATION.bib', '.github/workflows/citation.yml']
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - 'stable/**'
     paths: ['CITATION.bib', '.github/workflows/citation.yml']
 
 jobs:

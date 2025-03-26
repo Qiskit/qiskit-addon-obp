@@ -26,9 +26,9 @@ from qiskit_addon_obp.utils.truncating import TruncationErrorBudget
 class TestOBPMetadata(unittest.TestCase):
     def setUp(self) -> None:
         self.expected = OBPMetadata(
-            truncation_error_budget=TruncationErrorBudget([0.001], 0.01, 1),
+            truncation_error_budget=TruncationErrorBudget([0.001], 0.01, 1, 1e-6),
             num_slices=None,
-            operator_budget=OperatorBudget(50, 12, True),
+            operator_budget=OperatorBudget(50, 12, True, 1e-10, 1e-10),
             backpropagation_history=[
                 SliceMetadata(
                     slice_errors=[0.0, 0.0],

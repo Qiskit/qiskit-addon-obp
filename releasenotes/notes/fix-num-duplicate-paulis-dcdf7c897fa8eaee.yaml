@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    The :attr:`~.SimplifyMetadata.num_duplicate_paulis` was previously unable to
+    differentiate from Pauli terms that were trimmed due to their coefficient
+    being close to zero. This is now tracked correctly with these trimmed terms
+    only counting towards :attr:`~.SimplifyMetadata.num_trimmed_paulis`.
