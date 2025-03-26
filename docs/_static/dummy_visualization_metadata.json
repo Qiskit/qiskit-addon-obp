@@ -4,7 +4,8 @@
       0.001
     ],
     "max_error_total": 0.01,
-    "p_norm": 1
+    "p_norm": 1,
+    "tol": 1e-06
   },
   "num_slices": null,
   "operator_budget": {
