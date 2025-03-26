@@ -51,7 +51,8 @@ def backpropagate(
     *,
     truncation_error_budget: TruncationErrorBudget | None = None,
     operator_budget: OperatorBudget | None = None,
-    max_seconds: int | None = None,
+    max_seconds: int | None = None, 
+    disable_map: bool = True,
 ) -> tuple[list[SparsePauliOp], Sequence[QuantumCircuit], OBPMetadata]:
     """Backpropagate slices of quantum circuit operations onto the provided observables.
 
@@ -111,7 +112,11 @@ def backpropagate(
         operator_budget,
     )
 
-    observable_list, qargs_list = _get_observable_and_qargs_lists(observables)
+    if disable_map:
+        observable_list = list(observables)
+        qargs_list = [list(range(obs.num_qubits)) for obs in observable_list]
+    else:
+        observable_list, qargs_list = _get_observable_and_qargs_lists(observables)
 
     # Copy the input data structures to avoid modifying them.
     observables_out = observables_tmp = copy.deepcopy(observable_list)
