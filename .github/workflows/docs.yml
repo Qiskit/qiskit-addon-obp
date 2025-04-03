@@ -37,9 +37,8 @@ jobs:
           sed -i.bak -e '/unreleased_version_title:*/d' releasenotes/config.yaml
           echo unreleased_version_title: \"Upcoming release \(\`\`${GITHUB_REF_NAME}\`\`\)\" >> releasenotes/config.yaml
       - name: Build docs
-        shell: bash
         run: |
-          tox -edocs
+          tox -e docs
       - name: Upload docs artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
@@ -62,7 +61,7 @@ jobs:
 
   deploy:
     name: deploy docs
-    if: ${{ github.ref == 'refs/heads/stable/0.1' }}
+    if: ${{ github.ref == 'refs/heads/stable/0.2' }}
     needs: build
     permissions:
       pages: write

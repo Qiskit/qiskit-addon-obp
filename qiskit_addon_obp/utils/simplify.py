@@ -64,6 +64,14 @@ class OperatorBudget:
     simplify: bool = True
     """A flag denoting whether to call :func:`simplify` at every iteration."""
 
+    atol: float | None = None
+    """Absolute tolerance for checking if coefficients are zero. Defaults to the
+    :attr:`~qiskit.quantum_info.SparsePauliOp.atol` value of ``SparsePauliOp``."""
+
+    rtol: float | None = None
+    """Relative tolerance for checking if coefficients are zero. Defaults to the
+    :attr:`~qiskit.quantum_info.SparsePauliOp.rtol` value of ``Sparse``."""
+
     def is_active(self) -> bool:
         """Return whether ``self`` places any bounds on operator size."""
         return self.max_paulis is not None or self.max_qwc_groups is not None
@@ -119,8 +127,8 @@ def simplify(
 
     metadata = SimplifyMetadata(
         num_unique_paulis=len(indexes),
-        num_duplicate_paulis=len(operator.coeffs) - len(indexes),
-        num_trimmed_paulis=len(operator.coeffs) - len(indexes),
+        num_duplicate_paulis=len(nz_coeffs) - len(indexes),
+        num_trimmed_paulis=len(operator.coeffs) - len(nz_coeffs),
         sum_trimmed_coeffs=0.0,
     )
 

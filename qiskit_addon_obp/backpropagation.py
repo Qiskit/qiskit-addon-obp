@@ -153,18 +153,12 @@ def backpropagate(
             slice_metadata = SliceMetadata(
                 slice_errors=[0.0] * num_observables,
                 raw_num_paulis=[0] * num_observables,
-                num_unique_paulis=[0] * num_observables
+                num_unique_paulis=[len(op) for op in observables_tmp]
                 if operator_budget.simplify
                 else None,
-                num_duplicate_paulis=[0] * num_observables
-                if operator_budget.simplify
-                else None,
-                num_trimmed_paulis=[0] * num_observables
-                if operator_budget.simplify
-                else None,
-                sum_trimmed_coeffs=[0] * num_observables
-                if operator_budget.simplify
-                else None,
+                num_duplicate_paulis=[0] * num_observables if operator_budget.simplify else None,
+                num_trimmed_paulis=[0] * num_observables if operator_budget.simplify else None,
+                sum_trimmed_coeffs=[0] * num_observables if operator_budget.simplify else None,
                 num_truncated_paulis=[0] * num_observables,
                 num_paulis=[0] * num_observables,
                 sum_paulis=None,
@@ -218,8 +212,10 @@ def backpropagate(
                     slice_metadata.raw_num_paulis[i] = len(observables_tmp[i])
 
                     if operator_budget.simplify:
-                        observables_tmp[i], simplify_metadata = (
-                            simplify_sparse_pauli_op(observables_tmp[i])
+                        observables_tmp[i], simplify_metadata = simplify_sparse_pauli_op(
+                            observables_tmp[i],
+                            atol=operator_budget.atol,
+                            rtol=operator_budget.rtol,
                         )
                         slice_metadata.num_unique_paulis[i] = (  # type: ignore[index]
                             simplify_metadata.num_unique_paulis
@@ -399,6 +395,7 @@ def _truncate_terms(
         observable,
         left_over_error_budget,
         p_norm=p_norm,
+        tol=metadata.truncation_error_budget.tol,
     )
 
     accumulated_error = metadata.accumulated_error(observable_idx, slice_idx + 1)

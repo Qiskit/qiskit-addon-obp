@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    :class:`qiskit_addon_obp.utils.simplify.OperatorBudget` now holds ``atol`` and ``rtol`` fields which are absolute and relative tolerances used to determine whether coefficients are zero while simplifying an operator.
+    

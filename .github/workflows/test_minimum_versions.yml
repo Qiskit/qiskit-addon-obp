@@ -13,7 +13,7 @@ on:
 jobs:
   tests:
     name: minimum version tests (${{ matrix.os }}, ${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
       max-parallel: 4
@@ -34,6 +34,5 @@ jobs:
           pip install "tox==$(extremal-python-dependencies get-tox-minversion)"
           extremal-python-dependencies pin-dependencies-to-minimum --inplace
       - name: Test using tox environment
-        shell: bash
         run: |
           tox -e py,notebook,doctest --parallel --parallel-no-spinner

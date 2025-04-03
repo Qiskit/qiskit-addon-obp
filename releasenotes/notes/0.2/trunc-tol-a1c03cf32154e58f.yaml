@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    :func:`~.truncate_binary_search` now accepts a ``tol`` kwarg. Once an optimal truncation threshold, up to this value, has been found, the search for an optimal threshold will stop. The default tolerance is ``1e-8``; whereas, the tolerance used prior to this release was ``1e-10``.
+
+    :class:`~.TruncationErrorBudget` now holds a ``tol`` field. This field is used by :func:`~.backpropagate` as the ``tol`` argument to :func:`~.truncate_binary_search`.

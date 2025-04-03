@@ -17,7 +17,7 @@ import unittest
 import numpy as np
 from qiskit.circuit import Parameter
 from qiskit.quantum_info import Operator, SparsePauliOp
-from qiskit_addon_obp.utils.simplify import simplify
+from qiskit_addon_obp.utils.simplify import OperatorBudget, simplify
 
 
 class TestSimplify(unittest.TestCase):
@@ -35,8 +35,8 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 3)
-            self.assertEqual(metadata.num_duplicate_paulis, 4)
-            self.assertEqual(metadata.num_trimmed_paulis, 5)
+            self.assertEqual(metadata.num_duplicate_paulis, 3)
+            self.assertEqual(metadata.num_trimmed_paulis, 2)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 
     def test_simplify_zero(self):
@@ -55,8 +55,8 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 3)
-            self.assertEqual(metadata.num_duplicate_paulis, 11)
-            self.assertEqual(metadata.num_trimmed_paulis, 14)
+            self.assertEqual(metadata.num_duplicate_paulis, 9)
+            self.assertEqual(metadata.num_trimmed_paulis, 5)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 
     def test_simplify_parameters(self):
@@ -74,8 +74,8 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 3)
-            self.assertEqual(metadata.num_duplicate_paulis, 4)
-            self.assertEqual(metadata.num_trimmed_paulis, 5)
+            self.assertEqual(metadata.num_duplicate_paulis, 3)
+            self.assertEqual(metadata.num_trimmed_paulis, 2)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
 
     def test_simplify_no_op(self):
@@ -107,9 +107,30 @@ class TestSimplify(unittest.TestCase):
             np.testing.assert_array_equal(simplified_op.paulis.phase, np.zeros(simplified_op.size))
         with self.subTest("Assert Metadata"):
             self.assertEqual(metadata.num_unique_paulis, 2)
-            # FIXME: the following fails due to a known bug. The `num_duplicate_paulis` cannot
-            # differentiate between actual duplicates and values which have been trimmed due to the
-            # chosen tolerances.
-            # self.assertEqual(metadata.num_duplicate_paulis, 0)
+            self.assertEqual(metadata.num_duplicate_paulis, 0)
             self.assertEqual(metadata.num_trimmed_paulis, 2)
             self.assertEqual(metadata.sum_trimmed_coeffs, 0)
+
+
+class TestOperatorBudget(unittest.TestCase):
+    def test_tolerances(self):
+        """Test simplify method"""
+        budget = OperatorBudget()
+        coeffs = [1e-8, 1e-8j, 1e-8 + 1e-8j, 0.1, 0.2]
+        labels = ["IXI", "IXI", "ZZZ", "XXX", "YYY"]
+        spp_op = SparsePauliOp.from_list(zip(labels, coeffs))
+        simplified_op, metadata = simplify(spp_op, atol=budget.atol, rtol=budget.rtol)
+        target_coeffs = [1e-8 + 1e-8j, 0.1, 0.2]
+        target_labels = ["ZZZ", "XXX", "YYY"]
+        target_op = SparsePauliOp.from_list(zip(target_labels, target_coeffs))
+        with self.subTest("Assert Operator"):
+            self.assertEqual(simplified_op, target_op)
+
+        # Qiskit docs claim the larger of these two values is used.
+        budget = OperatorBudget(atol=0.01, rtol=1e-10)
+        target_coeffs = [0.1, 0.2]
+        target_labels = ["XXX", "YYY"]
+        simplified_op, metadata = simplify(spp_op, atol=budget.atol, rtol=budget.rtol)
+        target_op = SparsePauliOp.from_list(zip(target_labels, target_coeffs))
+        with self.subTest("Assert Operator"):
+            self.assertEqual(simplified_op, target_op)
