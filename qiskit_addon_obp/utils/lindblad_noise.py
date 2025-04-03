@@ -1,10 +1,9 @@
-from typing import Optional, Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 import numpy as np
-from qiskit import QuantumCircuit
 from qiskit.circuit import Instruction, QuantumRegister, Qubit
-from qiskit.quantum_info import Pauli, PauliList, SparsePauliOp
-from qiskit_aer.noise import pauli_error
+from qiskit.quantum_info import Pauli, PauliList
 from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
 
 
@@ -37,9 +36,7 @@ class PauliLindbladErrorInstruction(Instruction):
     @property
     def index(self):
         if self._index is None:
-            raise ValueError(
-                "Index not defined, you probably didn't mean to call this."
-            )
+            raise ValueError("Index not defined, you probably didn't mean to call this.")
         return self._index
 
     def _define(self):
@@ -72,7 +69,6 @@ def evolve_pauli_lindblad_error_instruction(
 ) -> tuple[float, np.ndarray]:
     fid = 1.0
     for gen, rate in zip(ple_instr._ple.generators, ple_instr._ple.rates):
-        
         prob_no_err = (1 + np.exp(-2 * rate)) / 2
         prob = 1 - prob_no_err
 

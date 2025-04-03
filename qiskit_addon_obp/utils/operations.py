@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 from qiskit.quantum_info import SparsePauliOp
+
 from .lindblad_noise import evolve_pauli_lindblad_error_instruction
 
 
@@ -211,13 +212,12 @@ def apply_ple_to(
     op: SparsePauliOp,
     ple_instr: PauliLindbladErrorInstruction,
 ):
-    """
-     TODO: Flesh this out more
+    """TODO: Flesh this out more
 
-     Apply Pauli Lindblad Error intruction ``𝑳`` to a SparsePauliOp by
-     evolving the ``op`` under ``𝑳`` in the following way:
+    Apply Pauli Lindblad Error intruction ``𝑳`` to a SparsePauliOp by
+    evolving the ``op`` under ``𝑳`` in the following way:
 
-        ``𝑳†•op•𝑳``
+       ``𝑳†•op•𝑳``
 
     """
     coeffs_new = []
