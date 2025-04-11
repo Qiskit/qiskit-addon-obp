@@ -30,7 +30,7 @@ dependencies = [
     "numpy>=1.23",
     "qiskit>=1.2, <3",
     "matplotlib",
-    "qiskit-ibm-runtime>=0.23",
+    "qiskit-ibm-runtime>=0.27",
 ]
 
 [project.optional-dependencies]
@@ -69,7 +69,6 @@ lint = [
 notebook-dependencies = [
     "qiskit-addon-obp",
     "qiskit-addon-utils",
-    "qiskit-ibm-runtime>=0.23",
     "rustworkx[graphviz]>=0.15",
     "ipywidgets",
     "pylatexenc",
