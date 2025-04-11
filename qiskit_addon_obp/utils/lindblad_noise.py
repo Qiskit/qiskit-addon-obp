@@ -66,11 +66,14 @@ class PauliLindbladErrorInstruction(Instruction):
 def evolve_pauli_lindblad_error_instruction(
     pauli: Pauli,
     ple_instr: PauliLindbladErrorInstruction,
+    ple_qargs_in_op: list[int],
 ) -> tuple[float, np.ndarray]:
     fid = 1.0
     for gen, rate in zip(ple_instr._ple.generators, ple_instr._ple.rates):
         prob_no_err = (1 + np.exp(-2 * rate)) / 2
         prob = 1 - prob_no_err
+
+        gen = gen.apply_layout(ple_qargs_in_op)
 
         if not pauli.anticommutes(gen):
             fid *= 1.0

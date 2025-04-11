@@ -188,10 +188,15 @@ def backpropagate(
 
                     if op_node.name == "reset":
                         observables_tmp[i] = apply_reset_to(observables_tmp[i], qargs_tmp[i][0])
+
                     elif op_node.name == "LayerError":
-                        observables_tmp[i] = apply_ple_to(
-                            op=observables_tmp[i], ple_instr=op_node.op
+                        observables_tmp[i], qargs_tmp[i] = apply_ple_to(
+                            observables_tmp[i],
+                            qargs_tmp[i],
+                            op_node.op,
+                            op_qargs,
                         )
+
                     else:
                         # Absorb gate into observable and update qubits on which the observable acts
                         observables_tmp[i], qargs_tmp[i] = apply_op_to(

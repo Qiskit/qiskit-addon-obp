@@ -20,6 +20,37 @@ from qiskit.quantum_info import SparsePauliOp
 from .lindblad_noise import evolve_pauli_lindblad_error_instruction
 
 
+def _expand_op_and_qargs(
+    op: SparsePauliOp, op_qargs: list[int], other_qargs: list[int]
+) -> tuple[SparsePauliOp, list[int], list[int]]:
+    """Expands an operator and its qargs to include a second list of qargs.
+
+    Args:
+        op: the operator to expand.
+        op_qargs: the current qargs of the operator.
+        other_qargs: the other list of qargs to include in the operator.
+
+    Returns:
+        A tuple of the expanded operator, its new list of qargs, and the list of other qargs sorted
+        by their position within the operator.
+    """
+    if set(other_qargs) <= set(op_qargs):
+        # all of the other_qargs are already covered by op
+        return op, op_qargs, [op_qargs.index(q) for q in other_qargs]
+
+    op_qargs_out = list(sorted(set(op_qargs).union(set(other_qargs))))
+    num_qubits = len(op_qargs_out)
+
+    # PERF: if the `.compose` call inside of `.apply_layout` becomes a bottleneck, it might be
+    # possible to improve performance for the cases in which we only need to pre-/append qubits
+    # on either end of the operators (i.e. rather than insert them in the middle).
+    op_expanded = op.apply_layout([op_qargs_out.index(q) for q in op_qargs], num_qubits)
+
+    other_qargs_in_op = [op_qargs_out.index(q) for q in other_qargs]
+
+    return op_expanded, op_qargs_out, other_qargs_in_op
+
+
 def apply_op_to(
     op1: SparsePauliOp,
     op1_qargs: list[int],
@@ -67,20 +98,7 @@ def apply_op_to(
     _validate_qargs(op1, op1_qargs)
     _validate_qargs(op2, op2_qargs)
 
-    if set(op2_qargs) <= set(op1_qargs):
-        # all of the qargs of op2 are already covered by op1
-        op1_expanded = op1
-        op1_qargs_out = op1_qargs
-    else:
-        op1_qargs_out = list(sorted(set(op1_qargs).union(set(op2_qargs))))
-        num_qubits = len(op1_qargs_out)
-
-        # PERF: if the `.compose` call inside of `.apply_layout` becomes a bottleneck, it might be
-        # possible to improve performance for the cases in which we only need to pre-/append qubits
-        # on either end of the operators (i.e. rather than insert them in the middle).
-        op1_expanded = op1.apply_layout([op1_qargs_out.index(q) for q in op1_qargs], num_qubits)
-
-    op2_qargs_in_op1 = [op1_qargs_out.index(q) for q in op2_qargs]
+    op1_expanded, op1_qargs_out, op2_qargs_in_op1 = _expand_op_and_qargs(op1, op1_qargs, op2_qargs)
 
     if apply_as_transform:
         op_out = op1_expanded.compose(op2, qargs=op2_qargs_in_op1, front=True).compose(
@@ -210,7 +228,9 @@ def apply_reset_to(
 
 def apply_ple_to(
     op: SparsePauliOp,
+    op_qargs: list[int],
     ple_instr: PauliLindbladErrorInstruction,
+    ple_qargs: list[int],
 ):
     """TODO: Flesh this out more
 
@@ -220,9 +240,15 @@ def apply_ple_to(
        ``𝑳†•op•𝑳``
 
     """
-    coeffs_new = []
-    for pauli, coeff in zip(op.paulis, op.coeffs):
+    _validate_qargs(op, op_qargs)
+    print(op, op_qargs, ple_qargs)
+    op_expanded, op_qargs_out, ple_qargs_in_op = _expand_op_and_qargs(op, op_qargs, ple_qargs)
+    print(op_expanded, op_qargs_out, ple_qargs_in_op)
+
+    new_coeffs = []
+    for pauli, coeff in zip(op_expanded.paulis, op_expanded.coeffs):
         _coeff = coeff
-        _coeff *= evolve_pauli_lindblad_error_instruction(pauli, ple_instr)
-        coeffs_new.append(_coeff)
-    return SparsePauliOp(op.paulis, coeffs_new)
+        _coeff *= evolve_pauli_lindblad_error_instruction(pauli, ple_instr, ple_qargs_in_op)
+        new_coeffs.append(_coeff)
+
+    return SparsePauliOp(op_expanded.paulis, new_coeffs), op_qargs_out
