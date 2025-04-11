@@ -260,7 +260,9 @@ def apply_ple_to(
 
     op_expanded, op_qargs_out, ple_qargs_in_op = _expand_op_and_qargs(op, op_qargs, ple_qargs)
 
-    expanded_ple_gens = [gen.apply_layout(ple_qargs_in_op) for gen in ple.generators]
+    expanded_ple_gens = [
+        gen.apply_layout(ple_qargs_in_op, op_expanded.num_qubits) for gen in ple.generators
+    ]
 
     new_coeffs = []
     for p, c in zip(op_expanded.paulis, op_expanded.coeffs):
