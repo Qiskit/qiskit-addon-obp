@@ -93,7 +93,6 @@ def apply_op_to(
     Raises:
         ValueError: The number of unique operator qargs must match the number of qubits in the
             corresponding operator.
-
     """
     _validate_qargs(op1, op1_qargs)
     _validate_qargs(op2, op2_qargs)
@@ -231,14 +230,34 @@ def apply_ple_to(
     op_qargs: list[int],
     ple: PauliLindbladError,
     ple_qargs: list[int],
-):
-    """TODO: Flesh this out more
+) -> tuple[SparsePauliOp, list[int]]:
+    r"""Apply a Pauli-Lindblad error ``ple`` to the operator ``op``.
 
-    Apply Pauli Lindblad Error intruction ``𝑳`` to a SparsePauliOp by
-    evolving the ``op`` under ``𝑳`` in the following way:
+    These operators do not necessarily need to act on the same number of qubits, as they
+    are assumed to act on a larger system. The position in the system of each operator
+    is defined by the corresponding ``qargs``. The output operator will be defined
+    on ``union(op_qargs, ple_qargs)``.
 
-       ``𝑳†•op•𝑳``
+    The error, :math:`\mathcal{L}`, is applied by evolving ``op``, :math:`\mathcal{O}`, as
+    :math:`\mathcal{L}^\dagger\vdot\matcal{O}\vdot\mathcal{L}`.
 
+    Args:
+        op: The operator on which ``ple`` will be applied.
+        op_qargs: The qubit indices for ``op``.
+        ple: The Pauli-Lindblad error.
+        ple_qargs: The qubit indices for ``ple``.
+
+    Returns:
+        The tuple ``(op, qargs)`` where ``op`` is the evolved ``op`` and ``qargs`` is a list of
+        qubit indices for the new operator ``op``. The qubit IDs in the output ``op`` correspond to
+        the global qubit ID in the same index in ``qargs``.
+
+        For example, if the output ``op`` is a ``SparsePauliOp("YX")`` and ``qargs`` is [3, 4],
+        the X term on qubit 0 of the operator corresponds to global qubit ID 3.
+
+    Raises:
+        ValueError: The number of unique operator qargs must match the number of qubits in the
+            corresponding operator.
     """
     _validate_qargs(op, op_qargs)
 
