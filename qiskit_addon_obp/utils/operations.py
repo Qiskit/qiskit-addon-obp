@@ -249,11 +249,8 @@ def apply_ple_to(
 
     Returns:
         The tuple ``(op, qargs)`` where ``op`` is the evolved ``op`` and ``qargs`` is a list of
-        qubit indices for the new operator ``op``. The qubit IDs in the output ``op`` correspond to
-        the global qubit ID in the same index in ``qargs``.
-
-        For example, if the output ``op`` is a ``SparsePauliOp("YX")`` and ``qargs`` is [3, 4],
-        the X term on qubit 0 of the operator corresponds to global qubit ID 3.
+        qubit indices for the new operator ``op``. Refer to :func:`apply_op_to` for more details on
+        the returned ``qargs``.
 
     Raises:
         ValueError: The number of unique operator qargs must match the number of qubits in the

@@ -19,30 +19,49 @@ from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
 
 
 class PauliLindbladErrorInstruction(Instruction):
+    """A lightweight wrapper around a ``PauliLindbladError``."""
+
     def __init__(self, ple: PauliLindbladError, index: int | None = None):
-        self.ple = ple
+        """Initializes a circuit instruction with a Pauli-Lindblad error.
+
+        Args:
+            ple: the Pauli-Lindblad error to include.
+            index: an optional index of this error instruction.
+        """
+        self._ple = ple
         self._index = index
         label = "LayerError"
         if index is not None:
             label = f"{label} {index}"
         super().__init__(
             name="LayerError",
-            num_qubits=self.ple.num_qubits,
+            num_qubits=self._ple.num_qubits,
             num_clbits=0,
             params=[],
             label=label,
         )
 
     def __eq__(self, other) -> bool:
+        """Checks the equality of two ``PauliLindbladErrorInstruction`` instances."""
         return (
             isinstance(other, PauliLindbladErrorInstruction)
             and self._index == other._index
-            and (self.ple.rates == other.ple.rates).all()
-            and (self.ple.generators == other.ple.generators)
+            and (self._ple.rates == other._ple.rates).all()
+            and (self._ple.generators == other._ple.generators)
         )
 
     @property
-    def index(self):
+    def index(self) -> int:
+        """Returns the index of this Pauli-Lindblad error instruction.
+
+        Raises:
+            ValueError: if this instruction has not index.
+        """
         if self._index is None:
             raise ValueError("Index not defined, you probably didn't mean to call this.")
         return self._index
+
+    @property
+    def ple(self) -> PauliLindbladError:
+        """Returns the internal Pauli-Lindblad error object."""
+        return self._ple
