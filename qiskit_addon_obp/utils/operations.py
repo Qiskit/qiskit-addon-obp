@@ -15,10 +15,9 @@
 
 from __future__ import annotations
 
+import numpy as np
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
-
-from .lindblad_noise import evolve_pauli_lindblad_error_instruction
 
 
 def _expand_op_and_qargs(
@@ -242,14 +241,17 @@ def apply_ple_to(
 
     """
     _validate_qargs(op, op_qargs)
-    print(op, op_qargs, ple_qargs)
+
     op_expanded, op_qargs_out, ple_qargs_in_op = _expand_op_and_qargs(op, op_qargs, ple_qargs)
-    print(op_expanded, op_qargs_out, ple_qargs_in_op)
+
+    expanded_ple_gens = [gen.apply_layout(ple_qargs_in_op) for gen in ple.generators]
 
     new_coeffs = []
-    for pauli, coeff in zip(op_expanded.paulis, op_expanded.coeffs):
-        _coeff = coeff
-        _coeff *= evolve_pauli_lindblad_error_instruction(pauli, ple, ple_qargs_in_op)
-        new_coeffs.append(_coeff)
+    for p, c in zip(op_expanded.paulis, op_expanded.coeffs):
+        coeff = c
+        for gen, rate in zip(expanded_ple_gens, ple.rates):
+            if p.anticommutes(gen):
+                coeff *= np.exp(-2 * rate)
+        new_coeffs.append(coeff)
 
     return SparsePauliOp(op_expanded.paulis, new_coeffs), op_qargs_out

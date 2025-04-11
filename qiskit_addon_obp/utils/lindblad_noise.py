@@ -14,10 +14,7 @@
 
 from __future__ import annotations
 
-import numpy as np
-
 from qiskit.circuit import Instruction
-from qiskit.quantum_info import Pauli
 from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
 
 
@@ -49,23 +46,3 @@ class PauliLindbladErrorInstruction(Instruction):
         if self._index is None:
             raise ValueError("Index not defined, you probably didn't mean to call this.")
         return self._index
-
-
-def evolve_pauli_lindblad_error_instruction(
-    pauli: Pauli,
-    ple: PauliLindbladError,
-    ple_qargs_in_op: list[int],
-) -> tuple[float, np.ndarray]:
-    fid = 1.0
-    for gen, rate in zip(ple.generators, ple.rates):
-        prob_no_err = (1 + np.exp(-2 * rate)) / 2
-        prob = 1 - prob_no_err
-
-        gen = gen.apply_layout(ple_qargs_in_op)
-
-        if not pauli.anticommutes(gen):
-            fid *= 1.0
-        else:
-            fid *= 1 - 2.0 * prob
-
-    return fid
