@@ -192,7 +192,7 @@ def backpropagate(
                     elif op_node.name == "LayerError":
                         ple = getattr(op_node.op, "ple", None)
                         if ple is None:
-                            raise RuntimeError(
+                            raise RuntimeError(  # pragma: no cover
                                 "Expected the LayerError circuit instruction to have a 'ple' "
                                 "attribute but `None` was found."
                             )

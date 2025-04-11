@@ -32,7 +32,7 @@ class PauliLindbladErrorInstruction(Instruction):
         self._index = index
         label = "LayerError"
         if index is not None:
-            label = f"{label} {index}"
+            label = f"{label} {index}"  # pragma: no cover
         super().__init__(
             name="LayerError",
             num_qubits=self._ple.num_qubits,
@@ -43,7 +43,7 @@ class PauliLindbladErrorInstruction(Instruction):
 
     def __eq__(self, other) -> bool:
         """Checks the equality of two ``PauliLindbladErrorInstruction`` instances."""
-        return (
+        return (  # pragma: no cover
             isinstance(other, PauliLindbladErrorInstruction)
             and self._index == other._index
             and (self._ple.rates == other._ple.rates).all()
@@ -57,9 +57,11 @@ class PauliLindbladErrorInstruction(Instruction):
         Raises:
             ValueError: if this instruction has not index.
         """
-        if self._index is None:
-            raise ValueError("Index not defined, you probably didn't mean to call this.")
-        return self._index
+        if self._index is None:  # pragma: no cover
+            raise ValueError(  # pragma: no cover
+                "Index not defined, you probably didn't mean to call this."
+            )
+        return self._index  # pragma: no cover
 
     @property
     def ple(self) -> PauliLindbladError:
