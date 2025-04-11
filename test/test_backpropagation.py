@@ -20,11 +20,13 @@ from time import sleep
 import numpy as np
 import pytest
 from qiskit import QuantumCircuit
-from qiskit.quantum_info import Pauli, SparsePauliOp
+from qiskit.quantum_info import Pauli, PauliList, SparsePauliOp
 from qiskit_addon_obp import backpropagate
+from qiskit_addon_obp.utils.lindblad_noise import PauliLindbladErrorInstruction
 from qiskit_addon_obp.utils.simplify import OperatorBudget
 from qiskit_addon_obp.utils.truncating import setup_budget
 from qiskit_addon_utils.slicing import slice_by_barriers, slice_by_depth
+from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
 
 
 class TestBackpropagation(unittest.TestCase):
@@ -589,6 +591,44 @@ class TestBackpropagation(unittest.TestCase):
                 ),
                 e_info.value.args[0],
             )
+
+        with self.subTest("PauliLindbladError has effect because it is applied after the CNOT"):
+            # NOTE: more extensive tests are done for the apply_ple_to function directly
+            lerr = PauliLindbladError(PauliList(["IX"]), [1e-3])
+            obs = [SparsePauliOp(["XY", "ZI", "II"], [3, 2, 1])]
+
+            qc1 = QuantumCircuit(2)
+            qc1.h(0)
+
+            qc2 = QuantumCircuit(2)
+            qc2.append(PauliLindbladErrorInstruction(lerr), [0, 1])
+            qc2.cx(0, 1)
+
+            slices = [qc1, qc2]
+
+            new_obs, _, _ = backpropagate(obs, slices)
+
+            target_obs = SparsePauliOp(["IY", "II", "ZX"], [-2.994006, 1.0, 1.996004])
+            self.assertEqual(new_obs[0], target_obs)
+
+        with self.subTest("PauliLindbladError has NO effect because it is applied before the CNOT"):
+            # NOTE: more extensive tests are done for the apply_ple_to function directly
+            lerr = PauliLindbladError(PauliList(["IX"]), [1e-3])
+            obs = [SparsePauliOp(["XY", "ZI", "II"], [3, 2, 1])]
+
+            qc1 = QuantumCircuit(2)
+            qc1.h(0)
+
+            qc2 = QuantumCircuit(2)
+            qc2.cx(0, 1)
+            qc2.append(PauliLindbladErrorInstruction(lerr), [0, 1])
+
+            slices = [qc1, qc2]
+
+            new_obs, _, _ = backpropagate(obs, slices)
+
+            target_obs = SparsePauliOp(["IY", "II", "ZX"], [-2.994006, 1.0, 2.0])
+            self.assertEqual(new_obs[0], target_obs)
 
     def test_backpropagate_multi(self):
         """Tests back-propagation into multiple observables."""
