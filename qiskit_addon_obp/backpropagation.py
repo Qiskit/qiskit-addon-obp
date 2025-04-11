@@ -190,10 +190,17 @@ def backpropagate(
                         observables_tmp[i] = apply_reset_to(observables_tmp[i], qargs_tmp[i][0])
 
                     elif op_node.name == "LayerError":
+                        ple = getattr(op_node.op, "ple", None)
+                        if ple is None:
+                            raise RuntimeError(
+                                "Expected the LayerError circuit instruction to have a 'ple' "
+                                "attribute but `None` was found."
+                            )
+
                         observables_tmp[i], qargs_tmp[i] = apply_ple_to(
                             observables_tmp[i],
                             qargs_tmp[i],
-                            op_node.op,
+                            ple,
                             op_qargs,
                         )
 
