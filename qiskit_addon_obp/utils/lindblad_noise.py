@@ -1,14 +1,28 @@
-from collections.abc import Sequence
-from typing import Optional
+# This code is a Qiskit project.
+#
+# (C) Copyright IBM 2025.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+"""A wrapper for PauliLindbladError objects as an Instruction."""
+
+from __future__ import annotations
 
 import numpy as np
-from qiskit.circuit import Instruction, QuantumRegister, Qubit
-from qiskit.quantum_info import Pauli, PauliList
+
+from qiskit.circuit import Instruction
+from qiskit.quantum_info import Pauli
 from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
 
 
 class PauliLindbladErrorInstruction(Instruction):
-    def __init__(self, ple: PauliLindbladError, index: Optional[int] = None):
+    def __init__(self, ple: PauliLindbladError, index: int | None = None):
         self.ple = ple
         self._index = index
         label = "LayerError"
@@ -23,44 +37,18 @@ class PauliLindbladErrorInstruction(Instruction):
         )
 
     def __eq__(self, other) -> bool:
-        if isinstance(other, PauliLindbladErrorInstruction):
-            if self._index != other._index:
-                return False
-            if (self.ple.rates != other.ple.rates).any():
-                return False
-            if self.ple.generators != other.ple.generators:
-                return False
-            return True
-        return False
+        return (
+            isinstance(other, PauliLindbladErrorInstruction)
+            and self._index == other._index
+            and (self.ple.rates == other.ple.rates).all()
+            and (self.ple.generators == other.ple.generators)
+        )
 
     @property
     def index(self):
         if self._index is None:
             raise ValueError("Index not defined, you probably didn't mean to call this.")
         return self._index
-
-    def _define(self):
-        self._definition = pauli_lindblad_error_to_qc(self.ple, instr=False)
-
-    def map_to_inds(
-        self, qargs: Sequence[Qubit], target_qreg: QuantumRegister
-    ) -> "PauliLindbladErrorInstruction":
-        qarg_map = {v: k for k, v in enumerate(list(target_qreg))}
-        qarg_inds = [qarg_map[qubit] for qubit in qargs]
-
-        x_ = np.zeros((len(self.ple.generators), len(target_qreg)))
-        z_ = np.zeros((len(self.ple.generators), len(target_qreg)))
-
-        x_[:, qarg_inds] = self.ple.generators.x
-        z_[:, qarg_inds] = self.ple.generators.z
-
-        return PauliLindbladErrorInstruction(
-            ple=PauliLindbladError(
-                generators=PauliList.from_symplectic(z_, x_, 0),
-                rates=self.ple.rates,
-            ),
-            index=self.index,
-        )
 
 
 def evolve_pauli_lindblad_error_instruction(
