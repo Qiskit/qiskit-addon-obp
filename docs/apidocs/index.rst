@@ -7,6 +7,7 @@
 
    qiskit_addon_obp
    qiskit_addon_obp.utils.metadata
+   qiskit_addon_obp.utils.noise
    qiskit_addon_obp.utils.operations
    qiskit_addon_obp.utils.simplify
    qiskit_addon_obp.utils.truncating

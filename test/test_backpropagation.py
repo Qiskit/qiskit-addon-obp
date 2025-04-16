@@ -22,7 +22,7 @@ import pytest
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Pauli, PauliList, SparsePauliOp
 from qiskit_addon_obp import backpropagate
-from qiskit_addon_obp.utils.lindblad_noise import PauliLindbladErrorInstruction
+from qiskit_addon_obp.utils.noise import PauliLindbladErrorInstruction
 from qiskit_addon_obp.utils.simplify import OperatorBudget
 from qiskit_addon_obp.utils.truncating import setup_budget
 from qiskit_addon_utils.slicing import slice_by_barriers, slice_by_depth

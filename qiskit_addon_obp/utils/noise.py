@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""A wrapper for PauliLindbladError objects as an Instruction."""
+"""Utilities for noise operators."""
 
 from __future__ import annotations
 
