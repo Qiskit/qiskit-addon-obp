@@ -41,15 +41,6 @@ class PauliLindbladErrorInstruction(Instruction):
             label=label,
         )
 
-    def __eq__(self, other) -> bool:
-        """Checks the equality of two ``PauliLindbladErrorInstruction`` instances."""
-        return (  # pragma: no cover
-            isinstance(other, PauliLindbladErrorInstruction)
-            and self._index == other._index
-            and (self._ple.rates == other._ple.rates).all()
-            and (self._ple.generators == other._ple.generators)
-        )
-
     @property
     def index(self) -> int:
         """Returns the index of this Pauli-Lindblad error instruction.
