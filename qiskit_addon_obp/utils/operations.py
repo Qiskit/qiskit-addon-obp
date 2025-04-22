@@ -26,9 +26,9 @@ def _expand_op_and_qargs(
     """Expands an operator and its qargs to include a second list of qargs.
 
     Args:
-        op: the operator to expand.
-        op_qargs: the current qargs of the operator.
-        other_qargs: the other list of qargs to include in the operator.
+        op: The operator to expand.
+        op_qargs: The current qargs of the operator.
+        other_qargs: The other list of qargs to include in the operator.
 
     Returns:
         A tuple of the expanded operator, its new list of qargs, and the list of other qargs sorted
