@@ -18,8 +18,15 @@ from functools import reduce
 import numpy as np
 import pytest
 from qiskit.circuit.library import CXGate, XGate
-from qiskit.quantum_info import SparsePauliOp
-from qiskit_addon_obp.utils.operations import apply_op_to, apply_reset_to, reduce_op, to_global_op
+from qiskit.quantum_info import PauliList, SparsePauliOp
+from qiskit_addon_obp.utils.operations import (
+    apply_op_to,
+    apply_ple_to,
+    apply_reset_to,
+    reduce_op,
+    to_global_op,
+)
+from qiskit_ibm_runtime.utils.noise_learner_result import PauliLindbladError
 
 
 class TestOperationsFunctions(unittest.TestCase):
@@ -235,3 +242,60 @@ class TestOperationsFunctions(unittest.TestCase):
             new_op = apply_reset_to(op, qubit_id, inplace=True)
             self.assertEqual(op, new_op)
             self.assertEqual(target_op, new_op)
+
+    def test_apply_ple_to(self):
+        with self.subTest("same support on 1 qubit"):
+            op = SparsePauliOp(["Z"], [1.0])
+            lerr = PauliLindbladError(PauliList(["X"]), [1e-3])
+            target_op = SparsePauliOp(["Z"], [0.998002])
+            new_op, new_qargs = apply_ple_to(op, [0], lerr, [0])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0])
+
+        with self.subTest("same support on 2 qubits"):
+            op = SparsePauliOp(["ZX"], [1.0])
+            lerr = PauliLindbladError(PauliList(["XX"]), [1e-3])
+            target_op = SparsePauliOp(["ZX"], [0.998002])
+            new_op, new_qargs = apply_ple_to(op, [0, 1], lerr, [0, 1])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0, 1])
+
+        with self.subTest("disjoint support"):
+            op = SparsePauliOp(["Z"], [1.0])
+            lerr = PauliLindbladError(PauliList(["X"]), [1e-3])
+            target_op = SparsePauliOp(["ZI"], [1.0])
+            new_op, new_qargs = apply_ple_to(op, [1], lerr, [0])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0, 1])
+
+        with self.subTest("overlapping support"):
+            op = SparsePauliOp(["XZ"], [1.0])
+            lerr = PauliLindbladError(PauliList(["XX"]), [1e-3])
+            target_op = SparsePauliOp(["XZI"], [0.998002])
+            new_op, new_qargs = apply_ple_to(op, [1, 2], lerr, [0, 1])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0, 1, 2])
+
+        with self.subTest("multiple PLE generators"):
+            op = SparsePauliOp(["XZ"], [1.0])
+            lerr = PauliLindbladError(PauliList(["XX", "YY"]), [1e-3, 1e-2])
+            target_op = SparsePauliOp(["XZI"], [0.97824024])
+            new_op, new_qargs = apply_ple_to(op, [1, 2], lerr, [0, 1])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0, 1, 2])
+
+        with self.subTest("multiple terms in observable"):
+            op = SparsePauliOp(["XZ", "YY"], [1.0])
+            lerr = PauliLindbladError(PauliList(["YY"]), [1e-2])
+            target_op = SparsePauliOp(["XZI", "YYI"], [0.98019867, 1.0])
+            new_op, new_qargs = apply_ple_to(op, [1, 2], lerr, [0, 1])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0, 1, 2])
+
+        with self.subTest("multiple terms in observable and multiple PLE generators"):
+            op = SparsePauliOp(["XZ", "YY"], [1.0])
+            lerr = PauliLindbladError(PauliList(["XX", "YY"]), [1e-3, 1e-2])
+            target_op = SparsePauliOp(["XZI", "YYI"], [0.97824024, 0.998002])
+            new_op, new_qargs = apply_ple_to(op, [1, 2], lerr, [0, 1])
+            self.assertEqual(new_op, target_op)
+            self.assertEqual(new_qargs, [0, 1, 2])
