@@ -27,6 +27,7 @@ from qiskit.quantum_info import Operator, SparsePauliOp
 from .utils.metadata import OBPMetadata, SliceMetadata
 from .utils.operations import (
     apply_op_to,
+    apply_ple_to,
     apply_reset_to,
     reduce_op,
     to_global_op,
@@ -188,6 +189,22 @@ def backpropagate(
                     if op_node.name == "reset":
                         assert len(op_qargs) == 1
                         observables_tmp[i] = apply_reset_to(observables_tmp[i], op_qargs[0])
+
+                    elif op_node.name == "LayerError":
+                        ple = getattr(op_node.op, "ple", None)
+                        if ple is None:
+                            raise RuntimeError(  # pragma: no cover
+                                "Expected the LayerError circuit instruction to have a 'ple' "
+                                "attribute but `None` was found."
+                            )
+
+                        observables_tmp[i], qargs_tmp[i] = apply_ple_to(
+                            observables_tmp[i],
+                            qargs_tmp[i],
+                            ple,
+                            op_qargs,
+                        )
+
                     else:
                         # Absorb gate into observable and update qubits on which the observable acts
                         observables_tmp[i], qargs_tmp[i] = apply_op_to(
