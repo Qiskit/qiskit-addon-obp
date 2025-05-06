@@ -205,14 +205,14 @@ class TestBackpropagation(unittest.TestCase):
             # Z term with coefficient 0.5 should be truncated now
             self.assertEqual([], reduced_slices)
         with self.subTest("reset"):
-            qc = QuantumCircuit(1)
-            qc.reset(0)
-            obs = SparsePauliOp("X")
+            qc = QuantumCircuit(2)
+            qc.reset(1)
+            obs = SparsePauliOp("ZX")
 
             new_obs, reduced_slices, _ = backpropagate(obs, [qc])
             # Z term with coefficient 0.5 should be truncated now
             self.assertEqual([], reduced_slices)
-            self.assertEqual(SparsePauliOp("I", coeffs=[0.0]), new_obs)
+            self.assertEqual(SparsePauliOp("IX"), new_obs)
         with self.subTest("simplify"):
             qc = QuantumCircuit(1)
             qc.reset(0)
