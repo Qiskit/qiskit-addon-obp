@@ -211,36 +211,31 @@ class TestOperationsFunctions(unittest.TestCase):
     def test_apply_reset_to(self):
         with self.subTest("Basic test."):
             op = SparsePauliOp(["XYZ", "YZX", "ZXY"], coeffs=[1.0, 2.0, 3.0])
-            target_op = SparsePauliOp(["XYI", "YZI", "ZXY"], coeffs=[1.0, 0.0, 0.0])
-            target_op.paulis.x[2][0] = False
-            target_op.paulis.z[2][0] = False
+            target_op = SparsePauliOp(["XYI"], coeffs=[1.0])
             qubit_id = 0
             new_op = apply_reset_to(op, qubit_id)
+            new_op = new_op.simplify()
             self.assertEqual(target_op, new_op)
 
-            target_op = SparsePauliOp(["XYZ", "YIX", "ZIY"], coeffs=[0.0, 2.0, 0.0])
-            target_op.paulis.x[0][1] = False
-            target_op.paulis.z[0][1] = False
+            target_op = SparsePauliOp(["YIX"], coeffs=[2.0])
             qubit_id = 1
             new_op = apply_reset_to(op, qubit_id)
+            new_op = new_op.simplify()
             self.assertEqual(target_op, new_op)
 
-            target_op = SparsePauliOp(["IYZ", "YZX", "IXY"], coeffs=[0.0, 0.0, 3.0])
-            target_op.paulis.x[1][2] = False
-            target_op.paulis.z[1][2] = False
+            target_op = SparsePauliOp(["IXY"], coeffs=[3.0])
             qubit_id = 2
             new_op = apply_reset_to(op, qubit_id)
-
+            new_op = new_op.simplify()
             self.assertEqual(target_op, new_op)
 
         with self.subTest("Inplace"):
             op = SparsePauliOp(["XYZ", "YZX", "ZXY"], coeffs=[1.0, 2.0, 3.0])
-            target_op = SparsePauliOp(["XYI", "YZI", "ZXY"], coeffs=[1.0, 0.0, 0.0])
-            target_op.paulis.x[2][0] = False
-            target_op.paulis.z[2][0] = False
+            target_op = SparsePauliOp(["XYI"], coeffs=[1.0])
             qubit_id = 0
             new_op = apply_reset_to(op, qubit_id, inplace=True)
             self.assertEqual(op, new_op)
+            new_op = new_op.simplify()
             self.assertEqual(target_op, new_op)
 
     def test_apply_ple_to(self):
