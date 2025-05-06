@@ -187,7 +187,8 @@ def backpropagate(
                     non_trivial_slice = True
 
                     if op_node.name == "reset":
-                        observables_tmp[i] = apply_reset_to(observables_tmp[i], qargs_tmp[i][0])
+                        assert len(op_qargs) == 1
+                        observables_tmp[i] = apply_reset_to(observables_tmp[i], op_qargs[0])
 
                     elif op_node.name == "LayerError":
                         ple = getattr(op_node.op, "ple", None)
