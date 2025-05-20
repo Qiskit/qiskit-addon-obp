@@ -102,8 +102,8 @@ modindex_common_prefix = ["qiskit_addon_obp."]
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "numpy": ("https://numpy.org/doc/stable/", None),
-    "qiskit": ("https://docs.quantum.ibm.com/api/qiskit/", None),
-    "qiskit-ibm-runtime": ("https://docs.quantum.ibm.com/api/qiskit-ibm-runtime/", None),
+    "qiskit": ("https://quantum.cloud.ibm.com/docs/api/qiskit/", None),
+    "qiskit-ibm-runtime": ("https://quantum.cloud.ibm.com/docs/api/qiskit-ibm-runtime/", None),
     "rustworkx": ("https://www.rustworkx.org/", None),
     "qiskit_addon_utils": ("https://qiskit.github.io/qiskit-addon-utils/", None),
 }
