@@ -28,7 +28,7 @@
 
 ### About
 
-[Qiskit addons](https://docs.quantum.ibm.com/guides/addons) are a collection of modular tools for building utility-scale workloads powered by Qiskit.
+[Qiskit addons](https://quantum.cloud.ibm.com/docs/guides/addons) are a collection of modular tools for building utility-scale workloads powered by Qiskit.
 
 This package contains the Qiskit addon for operator backpropagation (OBP). Experimental errors limit the depth of quantum circuits that can be executed on near-term devices. OBP is a technique to reduce circuit depth by trimming operations from its end at the cost of more operator measurements.
 
