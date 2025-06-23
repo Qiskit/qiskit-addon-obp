@@ -44,6 +44,7 @@ basetest = [
     "pytest-cov>=5.0",
     "pytest-subtests>=0.13",
     "qiskit-addon-utils",
+    "sympy>=1.3",
 ]
 test = [
     "qiskit-addon-obp[basetest]",
