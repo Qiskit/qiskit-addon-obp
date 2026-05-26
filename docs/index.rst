@@ -1,13 +1,11 @@
 ############################################
-Qiskit addon: operator backpropagation (OBP)
+Operator backpropagation (OBP)
 ############################################
-
-`Qiskit addons <https://quantum.cloud.ibm.com/docs/guides/addons>`_ are a collection of modular tools for building utility-scale workloads powered by Qiskit.
 
 This package contains the Qiskit addon for operator backpropagation (OBP).
 Experimental errors limit the depth of quantum circuits that can be executed
 on near-term devices. OBP is a technique to reduce circuit depth by trimming
-operations from its end at the cost of more operator measurements.
+operations from its end, at the cost of more operator measurements.
 
 As one backpropagates an operator further through a circuit, the size of the
 observable will grow exponentially, which results in both a classical and
@@ -18,35 +16,18 @@ coefficients can be truncated to reduce the quantum overhead. The error
 incurred by doing this can be controlled to find a suitable tradeoff between
 precision and efficiency.
 
-There are a number of ways in which operator backpropagation can be performed,
-this package uses a method based on Clifford perturbation theory, which has the
-benefit that the overhead incurred by backpropagating various gates is
+There are several ways to perform operator backpropagation. 
+This package uses a method based on Clifford perturbation theory, which has the
+benefit that the overhead incurred by backpropagating gates is
 determined by the non-Cliffordness of that gate. This leads to an increased
 efficiency for some families of circuits relative to tensor-network based
 methods for OBP, which currently have high classical overheads even in cases
-where the quantum overhead remains tame.
+where the quantum overhead remains low.
 
-Documentation
--------------
-
-All documentation is available `here <https://qiskit.github.io/qiskit-addon-obp/>`_.
-
-Installation
-------------
-
-We encourage installing this package via ``pip``, when possible:
-
-.. code-block:: bash
-
-   pip install 'qiskit-addon-obp'
-
-
-For more installation information refer to the `installation instructions <install.rst>`_ in the documentation.
-
-Deprecation Policy
+Deprecation policy
 ------------------
 
-We follow `semantic versioning <https://semver.org/>`_ and are guided by the principles in
+This package follows `semantic versioning <https://semver.org/>`_ and is guided by the principles in
 `Qiskit's deprecation policy <https://github.com/Qiskit/qiskit/blob/main/DEPRECATION.md>`_.
 We may occasionally make breaking changes in order to improve the user experience.
 When possible, we will keep old interfaces and mark them as deprecated, as long as they can co-exist with the
@@ -56,8 +37,6 @@ Each substantial improvement, breaking change, or deprecation will be documented
 
 Contributing
 ------------
-
-The source code is available `on GitHub <https://github.com/Qiskit/qiskit-addon-obp>`_.
 
 The developer guide is located at `CONTRIBUTING.md <https://github.com/Qiskit/qiskit-addon-obp/blob/main/CONTRIBUTING.md>`_
 in the root of this project's repository.
