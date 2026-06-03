@@ -155,7 +155,7 @@ def truncate_binary_search(
 
     Args:
         observable: the ``SparsePauliOp`` to truncate terms from.
-        budget: the maximum permissable truncation error.
+        budget: the maximum permissible truncation error.
         p_norm: an integer specifying what p-norm to use.
         tol: when the binary search thresholds differ by an amount smaller than ``tol``, the
             threshold search will stop.
