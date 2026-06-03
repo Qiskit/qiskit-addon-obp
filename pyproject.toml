@@ -186,6 +186,11 @@ notice-rgx = """
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+[tool.typos.default]
+# Pauli strings (e.g. "IY", "XIYIZ") are sequences of I/X/Y/Z and are not typos.
+extend-ignore-identifiers-re = ["^[IXYZ]+$"]
+
 [tool.typos.default.extend-words]
-IY = "IY"
 aer = "aer"
+# ruff rule selector for the copyright-notice check, not a typo of "COPY"
+CPY = "CPY"
