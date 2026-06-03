@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-python@v6
@@ -54,7 +54,7 @@ jobs:
           cp -a docs/_build/html artifact/qiskit-addon-obp-htmldocs
       - name: Upload nice docs artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: qiskit-addon-obp-htmldocs
           path: ./artifact
