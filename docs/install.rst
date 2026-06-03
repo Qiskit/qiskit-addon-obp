@@ -1,14 +1,13 @@
-Installation Instructions
+Installation instructions
 =========================
 
-Let's see how to install the package. The first
-thing to do is choose how you're going to run and install the
+Before installing the package, choose how you're going to run and install the
 packages. There are two primary ways to do this:
 
 - :ref:`Option 1`
 - :ref:`Option 2`
 
-Pre-Installation
+Preinstallation
 ^^^^^^^^^^^^^^^^
 
 First, create a minimal environment with only Python installed in it. We recommend using `Python virtual environments <https://docs.python.org/3.10/tutorial/venv.html>`__.
@@ -36,7 +35,7 @@ Note: If you are using Windows, use the following commands in PowerShell:
 Option 1: Install from PyPI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The most straightforward way to install the ``qiskit-addon-obp`` package is via ``PyPI``.
+The most straightforward way to install the ``qiskit-addon-obp`` package is by using ``PyPI``.
 
 .. code:: sh
 
@@ -45,10 +44,10 @@ The most straightforward way to install the ``qiskit-addon-obp`` package is via 
 
 .. _Option 2:
 
-Option 2: Install from Source
+Option 2: Install from source
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Users who wish to develop in the repository or run the notebooks locally may want to install from source.
+Users who want to develop in the repository or run the notebooks locally might want to install from source.
 
 If so, the first step is to clone the ``qiskit-addon-obp`` repository.
 
@@ -64,8 +63,8 @@ Next, upgrade pip and enter the repository.
     cd qiskit-addon-obp
 
 The next step is to install ``qiskit-addon-obp`` to the virtual environment. If you plan on running the notebooks, install the
-notebook dependencies in order to run all the visualizations in the notebooks. If you plan on developing in the repository, you
-may want to install the ``dev`` dependencies.
+notebook dependencies so you can run visualizations. If you plan on developing in the repository, you
+might want to install the ``dev`` dependencies.
 
 Adjust the options below to suit your needs.
 
@@ -73,7 +72,7 @@ Adjust the options below to suit your needs.
 
     pip install tox notebook -e '.[notebook-dependencies,dev]'
 
-If you installed the notebook dependencies, you can get started by running the notebooks in the docs.
+If you installed the notebook dependencies, you can get started by running the notebooks in the docs directory.
 
 .. code::
 
