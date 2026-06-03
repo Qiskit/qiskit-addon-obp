@@ -24,6 +24,10 @@ jobs:
         python-version: [3.9, 3.13]
     steps:
       - uses: actions/checkout@v6
+      - name: Set up Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: nightly
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
