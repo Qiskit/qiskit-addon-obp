@@ -51,7 +51,7 @@ test = [
 ]
 doctest = [
     "qiskit-addon-obp[basetest,notebook-dependencies]",
-    "pytest-doctestplus>=1.2.1",
+    "pytest-doctestplus>=1.3.0",
 ]
 nbtest = [
     "qiskit-addon-obp[basetest]",
