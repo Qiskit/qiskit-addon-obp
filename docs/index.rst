@@ -73,5 +73,5 @@ License
   :hidden:
   :caption: API reference
 
-   Python API reference <apidocs/index>
+   Python API reference <https://quantum.cloud.ibm.com/docs/en/api/qiskit-addon-obp>
    Release notes <release-notes>

@@ -13,34 +13,19 @@
   [![Tests](https://github.com/Qiskit/qiskit-addon-obp/actions/workflows/test_latest_versions.yml/badge.svg)](https://github.com/Qiskit/qiskit-addon-obp/actions/workflows/test_latest_versions.yml)
   [![Coverage](https://coveralls.io/repos/github/Qiskit/qiskit-addon-obp/badge.svg?branch=main)](https://coveralls.io/github/Qiskit/qiskit-addon-obp?branch=main)
 
-# Qiskit addon: operator backpropagation (OBP)
+# Operator backpropagation
 
-### Table of contents
+Operator backpropagation (OBP) is a technique for propagating an observable backward through gates at the end of a quantum circuit. This results in a more shallow circuit at the cost of an increase in observable measurement bases. As one backpropagates an operator further through a circuit, the size of the observable grows exponentially, resulting in both a classical and quantum resource overhead. However, for some circuits, the resulting distribution of Pauli observables is more concentrated than the worst-case exponential scaling, meaning that some terms in the Hamiltonian with small coefficients can be truncated to reduce the quantum overhead. The error incurred by doing this can be controlled to find a suitable tradeoff between precision and efficiency. 
 
-* [About](#about)
-* [Documentation](#documentation)
-* [Installation](#installation)
-* [Deprecation Policy](#deprecation-policy)
-* [Contributing](#contributing)
-* [License](#license)
+There are a number of ways in which operator backpropagation can be performed, this package uses a method based on Clifford perturbation theory, which has the benefit that the overhead incurred by backpropagating various gates is determined by the non-Cliffordness of that gate. This leads to an increased efficiency for some families of circuits relative to tensor-network based methods for OBP, which currently have high classical overheads even in cases where the quantum overhead remains tame.
 
-----------------------------------------------------------------------------------------------------
-
-### About
-
-[Qiskit addons](https://quantum.cloud.ibm.com/docs/guides/addons) are a collection of modular tools for building utility-scale workloads powered by Qiskit.
-
-This package contains the Qiskit addon for operator backpropagation (OBP). Experimental errors limit the depth of quantum circuits that can be executed on near-term devices. OBP is a technique to reduce circuit depth by trimming operations from its end at the cost of more operator measurements.
-
-As one backpropagates an operator further through a circuit, the size of the observable will grow exponentially, which results in both a classical and quantum resource overhead. However, for some circuits, the resulting distribution of Pauli observables is more concentrated than the worst-case exponential scaling, meaning that some terms in the Hamiltonian with small coefficients can be truncated to reduce the quantum overhead. The error incurred by doing this can be controlled to find a suitable tradeoff between precision and efficiency. 
-
-There are a number of ways in which operator backpropagation can be performed, this package uses a method based on Clifford perturbation theory, which has the benefit that the overhead incurred by backpropagating various gates is determined by the non-Cliffordness of that gate. This leads to an increased efficiency for some families of circuits relative to tensor-network based methods for OBP, which currently have high classical overheads even in cases where the quantum overhead remains tame. 
+This package is suitable for estimating expectation values of general quantum circuits and Pauli observables; however, for high-magic (very non-Clifford) circuits the observable error incurred from truncation will likely become prohibitive before the observable has been propagated through a meaningful portion of the circuit. For near-Clifford circuits, it may be possible to propagate through much more of the circuit will maintaining relatively small error bounds.
 
 ----------------------------------------------------------------------------------------------------
 
 ### Documentation
 
-All documentation is available at https://qiskit.github.io/qiskit-addon-obp/.
+[Documentation]() for this package is located on the IBM Quantum Platform.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -56,15 +41,15 @@ For more installation information refer to these [installation instructions](doc
 
 ----------------------------------------------------------------------------------------------------
 
-### Deprecation Policy
+### Getting started
 
-We follow [semantic versioning](https://semver.org/) and are guided by the principles in
-[Qiskit's deprecation policy](https://github.com/Qiskit/qiskit/blob/main/DEPRECATION.md).
-We may occasionally make breaking changes in order to improve the user experience.
-When possible, we will keep old interfaces and mark them as deprecated, as long as they can co-exist with the
-new ones.
-Each substantial improvement, breaking change, or deprecation will be documented in the
-[release notes](https://qiskit.github.io/qiskit-addon-obp/release-notes.html).
+A simple guide to help you get started quickly with this package is available [here]().
+
+----------------------------------------------------------------------------------------------------
+
+### Workflow examples
+
+Trotterized time evolution of a 2D spin model [[1]](https://www.nature.com/articles/s41534-026-01196-0).
 
 ----------------------------------------------------------------------------------------------------
 
@@ -80,12 +65,21 @@ We use [GitHub issues](https://github.com/Qiskit/qiskit-addon-obp/issues/new/cho
 
 ----------------------------------------------------------------------------------------------------
 
-### References
-
-1. B. Fuller *et al.*, "[Improved quantum computation using operator backpropagation](https://www.nature.com/articles/s41534-026-01196-0)," *npj Quantum Inf.* **12**, 51 (2026). [[arXiv](https://arxiv.org/abs/2502.01897)]
-
-----------------------------------------------------------------------------------------------------
-
 ### License
 
 [Apache License 2.0](LICENSE.txt)
+
+----------------------------------------------------------------------------------------------------
+
+### Deprecation Policy
+
+This project follows [semantic versioning](https://semver.org/). We may occasionally make breaking changes in order
+to improve the user experience. When possible, we will keep old interfaces and mark them as deprecated, as long as
+they can co-exist with the new ones. Each substantial improvement, breaking change, or deprecation will be documented
+in the [release notes](https://qiskit.github.io/qiskit-addon-obp/release-notes.html).
+
+----------------------------------------------------------------------------------------------------
+
+### References
+
+1. B. Fuller *et al.*, "[Improved quantum computation using operator backpropagation](https://www.nature.com/articles/s41534-026-01196-0)," *npj Quantum Inf.* **12**, 51 (2026). [[arXiv](https://arxiv.org/abs/2502.01897)]
