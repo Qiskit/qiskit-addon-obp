@@ -11,11 +11,11 @@ These simple guides help you to get started quickly with the package.
 
 - :doc:`Quick start <quickstart>`
 
-Going deeper / Beyond the basics
---------------------------------
+Beyond the basics
+-----------------
 
 These guides provide a deeper explanation of specific concepts and components from this package.
 
 - :doc:`Bound error in experiments <bound_error_using_p_norm>`
-- :doc:`Simulate circuits with OBP <simulating_circuits_with_obp>`
 - :doc:`Truncate operator terms during backpropagation <truncate_operator_terms>`
+- :doc:`Simulate circuits with OBP <simulating_circuits_with_obp>`
