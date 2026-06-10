@@ -21,7 +21,7 @@ from importlib.metadata import version as metadata_version
 sys.path.insert(0, os.path.abspath(".."))
 
 project = "Qiskit addon: operator backpropagation (OBP)"
-project_copyright = "2024, Qiskit addons team"
+project_copyright = "2026"
 description = "Reducing depth of circuits with operator backpropagation"
 author = "Qiskit addons team"
 language = "en"

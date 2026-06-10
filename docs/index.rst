@@ -59,9 +59,19 @@ License
   :hidden:
 
    Documentation Home <self>
-   Installation Instructions <install>
-   Tutorials <tutorials/index>
-   How-To Guides <how_tos/index>
-   API Reference <apidocs/index>
+   Installation instructions <install>
+   Guides <guides/index>
    GitHub <https://github.com/Qiskit/qiskit-addon-obp>
-   Release Notes <release-notes>
+
+.. toctree::
+  :hidden:
+  :caption: Tutorials
+
+  Operator backpropagation (OBP) for estimation of expectation values <https://quantum.cloud.ibm.com/docs/en/tutorials/operator-back-propagation>
+
+.. toctree::
+  :hidden:
+  :caption: API reference
+
+   Python API reference <apidocs/index>
+   Release notes <release-notes>
