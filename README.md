@@ -15,7 +15,7 @@
 
 # Operator backpropagation
 
-Operator backpropagation (OBP) is a technique for propagating an observable backward through gates at the end of a quantum circuit. This results in a more shallow circuit at the cost of an increase in observable measurement bases. As one backpropagates an operator further through a circuit, the size of the observable grows exponentially, resulting in both a classical and quantum resource overhead. However, for some circuits, the resulting distribution of Pauli observables is more concentrated than the worst-case exponential scaling, meaning that some terms in the Hamiltonian with small coefficients can be truncated to reduce the quantum overhead. The error incurred by doing this can be controlled to find a suitable tradeoff between precision and efficiency.
+This package implements the operator backpropagation technique for reducing depth of circuits in expectation value calculations. Operator backpropagation (OBP) is a technique for propagating an observable backward through gates at the end of a quantum circuit. This results in a more shallow circuit at the cost of an increase in observable measurement bases. As one backpropagates an operator further through a circuit, the size of the observable grows exponentially, resulting in both a classical and quantum resource overhead. However, for some circuits, the resulting distribution of Pauli observables is more concentrated than the worst-case exponential scaling, meaning that some terms in the Hamiltonian with small coefficients can be truncated to reduce the quantum overhead. The error incurred by doing this can be controlled to find a suitable tradeoff between precision and efficiency.
 
 There are a number of ways in which operator backpropagation can be performed, this package uses a method based on Clifford perturbation theory, which has the benefit that the overhead incurred by backpropagating various gates is determined by the non-Cliffordness of that gate. This leads to an increased efficiency for some families of circuits relative to tensor-network based methods for OBP, which currently have high classical overheads even in cases where the quantum overhead remains tame.
 
@@ -47,9 +47,9 @@ A simple guide to help you get started quickly with this package is available [h
 
 ----------------------------------------------------------------------------------------------------
 
-### Workflow examples
+### Use case examples
 
-Trotterized time evolution of a 2D spin model [[1]](https://www.nature.com/articles/s41534-026-01196-0).
+This technique has been used to implement lower-depth Trotter circuits for the time-evolution of a 2D spin model [[1]](https://www.nature.com/articles/s41534-026-01196-0).
 
 ----------------------------------------------------------------------------------------------------
 
@@ -74,6 +74,12 @@ in the root of this project's repository.
 By participating, you are expected to uphold Qiskit's [code of conduct](https://github.com/Qiskit/qiskit/blob/main/CODE_OF_CONDUCT.md).
 
 We use [GitHub issues](https://github.com/Qiskit/qiskit-addon-obp/issues/new/choose) for tracking requests and bugs.
+
+----------------------------------------------------------------------------------------------------
+
+### Citing this package
+
+If you use this package in your research, use the [CITATION.bib](CITATION.bib) file in this project’s repository to cite the appropriate reference(s).
 
 ----------------------------------------------------------------------------------------------------
 

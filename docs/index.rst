@@ -13,10 +13,10 @@ Getting started
 
 A simple guide to help you get started quickly with this package is available in the :doc:`quick start guide <guides/quickstart>`.
 
-Workflow examples
+Use case examples
 -----------------
 
-Trotterized time evolution of a 2D spin model `[1] <https://www.nature.com/articles/s41534-026-01196-0>`_.
+This technique has been used to implement lower-depth Trotter circuits for the time-evolution of a 2D spin model `[1] <https://www.nature.com/articles/s41534-026-01196-0>`_.
 
 Technical discussion
 --------------------
@@ -38,6 +38,11 @@ in the root of this project's repository.
 By participating, you are expected to uphold Qiskit's `code of conduct <https://github.com/Qiskit/qiskit/blob/main/CODE_OF_CONDUCT.md>`_.
 
 We use `GitHub issues <https://github.com/Qiskit/qiskit-addon-obp/issues/new/choose>`_ for tracking requests and bugs.
+
+Citing this package
+-------------------
+
+If you use this package in your research, use the :download:`CITATION.bib <../CITATION.bib>` file in this project's repository to cite the appropriate reference(s).
 
 License
 -------
