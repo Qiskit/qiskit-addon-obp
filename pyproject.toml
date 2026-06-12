@@ -137,6 +137,9 @@ testpaths = ["./qiskit_addon_obp/", "./test/"]
 line-length = 100
 src = ["qiskit_addon_obp", "test"]
 target-version = "py39"
+# ``display`` is provided by IPython at notebook runtime. Declaring it here keeps it from
+# being flagged as undefined (F821) when notebooks are linted as plain Python (e.g. via nbqa).
+builtins = ["display"]
 
 [tool.ruff.lint]
 select = [
