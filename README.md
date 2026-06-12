@@ -55,14 +55,12 @@ Trotterized time evolution of a 2D spin model [[1]](https://www.nature.com/artic
 
 ### Technical discussion
 
-- A single function for performing OBP, `backpropagate`
-- Two independent controls over the depth ↔ accuracy tradeoff
+- **A single function for performing OBP, `backpropagate`**
+- **Two independent controls over the depth ↔ accuracy tradeoff**
     - `OperatorBudget` sets bounds on how large the observable may grow during backpropagation
     - `TruncationErrorBudget` sets bounds on how much error can be incurred during backpropagation
-- Effectiveness depends on how Clifford the circuit is
-    - For high-magic circuits (i.e. very non-Clifford), terms added to the observable during backpropagation tend to have larger coefficients, which means one will generally incur a large amount of truncation error earlier during backpropagation, limiting the depth savings under a fixed error budget. For circuits that are near-Clifford, one can generally truncate terms more aggressively and backpropagate deeper into the circuit while staying under a fixed error budget compared to high-magic circuits.
-- Fully introspectable
-    - Each run returns an `OBPMetadata` object recording per-slice Pauli counts, QWC-group counts, and accumulated truncation error, with `plot_*` helpers to visualize operator growth and error against circuit
+- **Effectiveness depends on how Clifford the circuit is:** For high-magic circuits (i.e. very non-Clifford), terms added to the observable during backpropagation tend to have larger coefficients, which means one will generally incur a large amount of truncation error earlier during backpropagation, limiting the depth savings under a fixed error budget. For circuits that are near-Clifford, one can generally truncate terms more aggressively and backpropagate deeper into the circuit while staying under a fixed error budget compared to high-magic circuits.
+- **Fully introspectable:** Each run returns an `OBPMetadata` object recording per-slice Pauli counts, QWC-group counts, and accumulated truncation error, with `plot_*` helpers to visualize operator growth and error against circuit
 depth — useful for tuning budgets before committing QPU time.
 
 ----------------------------------------------------------------------------------------------------
