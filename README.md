@@ -53,6 +53,20 @@ Trotterized time evolution of a 2D spin model [[1]](https://www.nature.com/artic
 
 ----------------------------------------------------------------------------------------------------
 
+### Technical discussion
+
+- A single function for performing OBP, `backpropagate`
+- Two independent controls over the depth ↔ accuracy tradeoff
+    - `OperatorBudget` sets bounds on how large the observable may grow during backpropagation
+    - `TruncationErrorBudget` sets bounds on how much error can be incurred during backpropagation
+- Effectiveness depends on how Clifford the circuit is
+    - For high-magic circuits (i.e. very non-Clifford), the terms in the observable tend to have larger coefficients, which means one will generally incur a large amount of error earlier during backpropagation, limiting the depth savings. For circuits that are near-Clifford, one can generally truncate terms more aggressively and backpropagate deeper into the circuit while staying under a fixed error budget.
+- Fully introspectable
+    - Each run returns an `OBPMetadata` object recording per-slice Pauli counts, QWC-group counts, and accumulated truncation error, with `plot_*` helpers to visualize operator growth and error against circuit
+depth — useful for tuning budgets before committing QPU time.
+
+----------------------------------------------------------------------------------------------------
+
 ### Contributing
 
 The source code is available [on GitHub](https://github.com/Qiskit/qiskit-addon-obp).
