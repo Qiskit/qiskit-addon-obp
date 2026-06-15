@@ -16,6 +16,6 @@ Beyond the basics
 
 These guides provide a deeper explanation of specific concepts and components from this package.
 
-- :doc:`Bound error in experiments <bound_error_using_p_norm>`
 - :doc:`Truncate operator terms during backpropagation <truncate_operator_terms>`
+- :doc:`Bound error in experiments <bound_error_using_p_norm>`
 - :doc:`Simulate circuits with OBP <simulating_circuits_with_obp>`
