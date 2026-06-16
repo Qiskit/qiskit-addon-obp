@@ -34,8 +34,7 @@ Contributing
 ------------
 
 The developer guide is located at `CONTRIBUTING.md <https://github.com/Qiskit/qiskit-addon-obp/blob/main/CONTRIBUTING.md>`_
-in the root of this project's repository.
-By participating, you are expected to uphold Qiskit's `code of conduct <https://github.com/Qiskit/qiskit/blob/main/CODE_OF_CONDUCT.md>`_.
+in the root of this project's repository. By participating, you are expected to uphold Qiskit's `code of conduct <https://github.com/Qiskit/qiskit/blob/main/CODE_OF_CONDUCT.md>`_.
 
 We use `GitHub issues <https://github.com/Qiskit/qiskit-addon-obp/issues/new/choose>`_ for tracking requests and bugs.
 
