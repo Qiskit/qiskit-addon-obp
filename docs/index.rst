@@ -41,7 +41,7 @@ We use `GitHub issues <https://github.com/Qiskit/qiskit-addon-obp/issues/new/cho
 Citing this package
 -------------------
 
-If you use this package in your research, use the :download:`CITATION.bib <../CITATION.bib>` file in this project's repository to cite the appropriate reference(s).
+If you use this package in your research, use the `CITATION.bib <https://github.com/Qiskit/qiskit-addon-obp/blob/main/CITATION.bib>`_ file in this project's repository to cite the appropriate reference(s).
 
 License
 -------
