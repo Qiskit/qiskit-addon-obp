@@ -102,7 +102,6 @@ def backpropagate(
         ValueError: ``operator_budget.max_paulis`` or ``operator_budget.max_qwc_groups`` is less than 1.
 
     """
-
     operator_budget = operator_budget or OperatorBudget()
     truncation_error_budget = truncation_error_budget or TruncationErrorBudget()
 

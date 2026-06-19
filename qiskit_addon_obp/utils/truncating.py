@@ -111,7 +111,6 @@ def setup_budget(
         ValueError: if ``max_error_per_slice`` and ``max_error_total`` are both ``None``.
 
     """
-
     if max_error_per_slice is None and max_error_total is None:
         raise ValueError("max_error_per_slice and max_error_total may not both be None")
 
