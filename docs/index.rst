@@ -73,7 +73,7 @@ References
    :hidden:
    :caption: Tutorials
 
-   Operator backpropagation (OBP) for estimation of expectation values <https://quantum.cloud.ibm.com/docs/en/tutorials/operator-back-propagation>
+   Operator backpropagation (OBP) for estimation of expectation values <https://quantum.cloud.ibm.com/docs/tutorials/operator-back-propagation>
 
 .. toctree::
    :hidden:
