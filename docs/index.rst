@@ -75,6 +75,21 @@ License
 
 `Apache License 2.0 <https://github.com/Qiskit/qiskit-addon-obp/blob/main/LICENSE.txt>`_
 
+<<<<<<< HEAD
+=======
+Deprecation policy
+------------------
+
+This package follows `semantic versioning <https://semver.org/>`_. We may occasionally make breaking changes in order to improve
+the user experience. When possible, we will keep old interfaces and mark them as deprecated, as long as they can co-exist with the new ones.
+Each substantial improvement, breaking change, or deprecation will be documented in the
+`release notes <https://quantum.cloud.ibm.com/docs/en/api/qiskit-addon-paulice/release-notes>`_.
+
+References
+----------
+
+1. B. Fuller *et al.*, "`Improved quantum computation using operator backpropagation <https://www.nature.com/articles/s41534-026-01196-0>`_," *npj Quantum Inf.* **12**, 51 (2026). [`arXiv <https://arxiv.org/abs/2502.01897>`_]
+>>>>>>> 44c82c3 (Replace github.io links with links to the Platform. (#143))
 
 .. toctree::
   :hidden:
