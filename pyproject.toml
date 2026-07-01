@@ -58,7 +58,7 @@ nbtest = [
 ]
 style = [
     "ruff==0.12.7",
-    "nbqa>=1.8.5",
+    "nbqa>=1.9.1",
     "typos>=1.20.0",
 ]
 lint = [
